@@ -7,7 +7,7 @@ import { useState, useEffect } from "react";
 
 // Typewriter effect for alternating words
 function TypewriterWord() {
-  const words = ["Zindagi", "Potential", "Ideas", "Skills", "Future", "Growth"];
+  const words = ["Zindagi", "Potential", "Purpose", "Ideas", "Skills", "Future", "Growth"];
   const [currentIndex, setCurrentIndex] = useState(0);
   const [displayText, setDisplayText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
@@ -115,7 +115,7 @@ export function HeroNotion() {
               className="mb-4"
             >
               <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-orange-50 text-orange-600 border border-orange-100/50">
-                ✨ A community for curious minds
+                <span className="animate-pulse">✨</span> A community for curious minds
               </span>
             </motion.div>
 
