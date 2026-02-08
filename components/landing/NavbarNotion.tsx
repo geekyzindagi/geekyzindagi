@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Session } from "next-auth";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
+import { Logo } from "@/components/ui/logo";
 
 interface NavbarNotionProps {
   session: Session | null;
@@ -28,9 +29,7 @@ export function NavbarNotion({ session }: NavbarNotionProps) {
         <div className="container mx-auto px-6">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
-            <Link href="/" className="text-lg font-bold text-gray-900">
-              GeekyZindagi
-            </Link>
+            <Logo />
 
             {/* Desktop nav */}
             <div className="hidden md:flex items-center gap-1">

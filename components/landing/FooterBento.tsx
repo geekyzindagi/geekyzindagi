@@ -12,6 +12,7 @@ import {
   Mail,
   MapPin,
 } from "lucide-react";
+import { Logo } from "@/components/ui/logo";
 
 const footerLinks = {
   product: {
@@ -74,10 +75,7 @@ export function FooterBento() {
             className="col-span-12 md:col-span-6 lg:col-span-4 p-8 rounded-3xl border border-white/10 bg-gradient-to-br from-purple-500/10 to-pink-500/10"
           >
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center">
-                <Sparkles className="w-6 h-6 text-white" />
-              </div>
-              <span className="text-2xl font-bold">GeekyZindagi</span>
+              <Logo />
             </div>
             <p className="text-muted-foreground mb-6 leading-relaxed">
               A community of curious minds exploring life through learning,

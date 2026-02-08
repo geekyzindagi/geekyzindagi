@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { Logo } from "@/components/ui/logo";
 
 interface SidebarProps {
   isAdmin: boolean;
@@ -99,12 +100,10 @@ export function Sidebar({ isAdmin }: SidebarProps) {
           collapsed ? "justify-center" : "justify-between"
         )}>
           {!collapsed && (
-            <Link href="/dashboard" className="text-xl font-bold">
-              GeekyZindagi
-            </Link>
+            <Logo href="/dashboard" />
           )}
           {collapsed && (
-            <Link href="/dashboard" className="text-xl font-bold">
+            <Link href="/dashboard" className="text-xl font-black bg-gradient-to-br from-indigo-500 to-pink-500 bg-clip-text text-transparent">
               GZ
             </Link>
           )}

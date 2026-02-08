@@ -2,6 +2,7 @@ import Link from "next/link";
 import { NavbarNotion, FooterNotion } from "@/components/landing";
 import { auth } from "@/lib/auth";
 import { Github, ExternalLink, Star, GitFork, Code2 } from "lucide-react";
+import { getGitHubStats } from "@/lib/github";
 
 const projects = [
   {
@@ -18,6 +19,18 @@ const projects = [
 export default async function ProjectsPage() {
   const session = await auth();
 
+  // Fetch real-time GitHub stats for all projects
+  const projectsWithStats = await Promise.all(
+    projects.map(async (project) => {
+      const stats = await getGitHubStats(project.github);
+      return {
+        ...project,
+        stars: stats?.stars ?? project.stars,
+        forks: stats?.forks ?? project.forks,
+      };
+    })
+  );
+
   return (
     <div className="min-h-screen bg-[#FFFCF8]">
       <NavbarNotion session={session} />
@@ -33,7 +46,7 @@ export default async function ProjectsPage() {
         </div>
 
         <div className="max-w-xl mx-auto">
-          {projects.map((project) => (
+          {projectsWithStats.map((project) => (
             <div 
               key={project.title}
               className="group flex flex-col justify-between bg-white border border-gray-200 rounded-2xl p-8 hover:shadow-2xl hover:border-blue-200 transition-all duration-300 relative overflow-hidden"

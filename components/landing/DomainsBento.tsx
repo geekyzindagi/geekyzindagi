@@ -15,10 +15,23 @@ import {
   Gamepad2,
   BookOpen,
   Sparkles,
+  Rocket,
+  Microscope,
+  Lightbulb,
 } from "lucide-react";
 import { ParallaxLayer } from "./effects";
 
 const domainGroups = {
+  science: {
+    title: "Mind & Science",
+    emoji: "🧠",
+    gradient: "from-indigo-500 to-cyan-500",
+    items: [
+      { name: "Neuroscience", icon: Brain },
+      { name: "Psychology", icon: Microscope },
+      { name: "Human Behaviour", icon: Lightbulb },
+    ],
+  },
   creative: {
     title: "Creative Arts",
     emoji: "🎨",
@@ -46,6 +59,15 @@ const domainGroups = {
       { name: "AI & ML", icon: Brain },
       { name: "Backend", icon: Server },
       { name: "DevOps", icon: Code2 },
+    ],
+  },
+  startup: {
+    title: "Startups",
+    emoji: "🚀",
+    gradient: "from-emerald-500 to-teal-500",
+    items: [
+      { name: "Business", icon: Rocket },
+      { name: "Strategy", icon: Lightbulb },
     ],
   },
   lifestyle: {

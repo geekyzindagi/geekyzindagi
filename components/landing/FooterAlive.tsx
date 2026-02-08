@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
 import { Twitter, Heart, Github, Youtube, Instagram, Mail } from "lucide-react";
 import { useRef } from "react";
+import { Logo } from "@/components/ui/logo";
 
 const links = {
   explore: [
@@ -55,13 +56,7 @@ export function FooterAlive() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
             {/* Brand */}
             <div className="col-span-2 md:col-span-1">
-              <motion.div
-                className="text-xl font-bold mb-4"
-                whileHover={{ x: 5 }}
-                transition={{ type: "spring", stiffness: 300 }}
-              >
-                GeekyZindagi
-              </motion.div>
+              <Logo className="mb-4" />
               <p className="text-sm text-muted-foreground mb-4">
                 Learn. Build. Create value.
               </p>

@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Twitter, Github, Youtube, Instagram, Mail } from "lucide-react";
+import { Logo } from "@/components/ui/logo";
 
 const links = {
   explore: [
@@ -36,7 +37,7 @@ export function FooterMinimal() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
             {/* Brand */}
             <div className="col-span-2 md:col-span-1">
-              <div className="text-xl font-bold mb-4">GeekyZindagi</div>
+              <Logo className="mb-4" />
               <p className="text-sm text-muted-foreground">
                 Learn. Build. Create value.
               </p>

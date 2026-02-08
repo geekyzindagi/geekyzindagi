@@ -91,7 +91,44 @@ const domains = [
     category: "fitness",
     description: "Bodyweight mastery, street workout",
   },
+  // Mind & Science
+  {
+    name: "Neuroscience",
+    icon: Brain,
+    color: "#06b6d4",
+    category: "science",
+    description: "Brain structure and function",
+  },
+  {
+    name: "Psychology",
+    icon: Heart,
+    color: "#8b5cf6",
+    category: "science",
+    description: "Human behavior and mental processes",
+  },
+  {
+    name: "Human Behaviour",
+    icon: PersonStanding,
+    color: "#ec4899",
+    category: "science",
+    description: "Social dynamics and behavioral patterns",
+  },
+  {
+    name: "EEG",
+    icon: Network,
+    color: "#22c55e",
+    category: "science",
+    description: "Brainwave monitoring and neurofeedback",
+  },
 
+  // Startups & Business
+  {
+    name: "Startup",
+    icon: Sparkles,
+    color: "#f59e0b",
+    category: "business",
+    description: "Building, scaling, and entrepreneurship",
+  },
   // Tech & Engineering
   {
     name: "IoT & Hardware",
