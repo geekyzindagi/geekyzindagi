@@ -1,0 +1,204 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+// ============ AUTH.JS REQUIRED MODELS ============
+
+model User {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  password      String? // For email/password auth (hashed with bcrypt)
+
+  // MFA Fields
+  mfaEnabled     Boolean  @default(false)
+  mfaSecret      String? // Encrypted TOTP secret
+  mfaBackupCodes String[] // Encrypted backup codes
+
+  // User status
+  role   Role       @default(USER)
+  status UserStatus @default(PENDING)
+  memberTier MemberTier @default(BUILDER) // Tier in the community
+
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  accounts       Account[]
+  sessions       Session[]
+  invitesSent    Invite[]             @relation("InvitesSent")
+  invitedBy      Invite?              @relation("InvitedUser")
+  passwordResets PasswordResetToken[]
+
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String  @map("user_id") @db.ObjectId
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  sessionToken String   @unique @map("session_token")
+  userId       String   @map("user_id") @db.ObjectId
+  expires      DateTime
+
+  // MFA verification for this session
+  mfaVerified Boolean @default(false)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+// ============ CUSTOM AUTH MODELS ============
+
+model Invite {
+  id      String       @id @default(auto()) @map("_id") @db.ObjectId
+  email   String
+  token   String       @unique
+  expires DateTime
+  status  InviteStatus @default(PENDING)
+
+  // Who sent the invite
+  invitedById String @map("invited_by_id") @db.ObjectId
+  invitedBy   User   @relation("InvitesSent", fields: [invitedById], references: [id])
+
+  // The user created from this invite (after acceptance)
+  userId String? @unique @map("user_id") @db.ObjectId
+  user   User?   @relation("InvitedUser", fields: [userId], references: [id])
+
+  // Metadata
+  role    Role    @default(USER)
+  message String? // Optional personal message
+
+  createdAt DateTime  @default(now())
+  usedAt    DateTime?
+
+  @@index([email])
+  @@map("invites")
+}
+
+model PasswordResetToken {
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  token   String   @unique
+  expires DateTime
+  used    Boolean  @default(false)
+
+  userId String @map("user_id") @db.ObjectId
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime  @default(now())
+  usedAt    DateTime?
+
+  // Security: Track IP and user agent
+  ipAddress String?
+  userAgent String?
+
+  @@index([userId])
+  @@map("password_reset_tokens")
+}
+
+// ============ ENUMS ============
+
+enum Role {
+  USER
+  ADMIN
+  SUPER_ADMIN
+}
+
+enum UserStatus {
+  PENDING // Invited but not yet registered
+  ACTIVE // Fully registered and active
+  SUSPENDED // Temporarily disabled
+  DELETED // Soft deleted
+}
+
+enum InviteStatus {
+  PENDING // Sent but not used
+  ACCEPTED // User registered via this invite
+  EXPIRED // Token expired
+  REVOKED // Manually revoked by admin
+}
+
+enum MemberTier {
+  EXPLORER // Submitted idea, not yet in community
+  BUILDER // Active member with community access
+  ELDER // Mentor, building & guiding others
+}
+
+enum IdeaStatus {
+  PENDING // Just submitted
+  REVIEWED // Admin has seen it
+  CONTACTED // Reached out to submitter
+  CONVERTED // Submitter became a member
+}
+
+// ============ IDEA SUBMISSION MODEL ============
+
+model IdeaSubmission {
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  
+  // Submitter info
+  name        String
+  email       String?
+  
+  // Idea details
+  title       String
+  description String
+  techStack   String[]   // Technologies they want to use
+  nextSteps   String     // How they want to proceed
+  lookingFor  String     // What they're seeking: feedback, collaborators, mentorship, etc.
+  
+  // Admin tracking
+  status      IdeaStatus @default(PENDING)
+  notes       String?    // Internal admin notes
+  
+  // If they become a user, link them
+  convertedUserId String? @unique @map("converted_user_id") @db.ObjectId
+  
+  // Timestamps
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@index([email])
+  @@index([status])
+  @@map("idea_submissions")
+}
