@@ -202,3 +202,39 @@ model IdeaSubmission {
   @@index([status])
   @@map("idea_submissions")
 }
+
+// ============ COMMUNITY REQUESTS ============
+
+model EventRequest {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  type        String   // online, offline, hackathon
+  email       String
+  topic       String
+  details     String
+  status      RequestStatus @default(PENDING)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("event_requests")
+}
+
+model MentorshipRequest {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  email       String
+  role        String   // designer, frontend, backend, etc
+  message     String
+  portfolio   String?
+  status      RequestStatus @default(PENDING)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("mentorship_requests")
+}
+
+enum RequestStatus {
+  PENDING
+  REVIEWED
+  CONTACTED
+  ARCHIVED
+}

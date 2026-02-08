@@ -10,6 +10,7 @@ import {
   ChevronRight,
   Settings,
   Lightbulb,
+  Bell,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
@@ -40,6 +41,11 @@ export function Sidebar({ isAdmin }: SidebarProps) {
       href: "/admin/ideas",
       label: "Ideas",
       icon: Lightbulb,
+    },
+    {
+      href: "/admin/requests",
+      label: "Requests",
+      icon: Bell,
     },
   ];
 

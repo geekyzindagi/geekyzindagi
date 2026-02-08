@@ -24,12 +24,30 @@ export default function EventsPage() {
     e.preventDefault();
     setIsLoading(true);
     
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    setIsLoading(false);
-    setIsSubmitted(true);
-    toast.success("Event request submitted successfully!");
+    const formData = new FormData(e.currentTarget);
+    const data = {
+      type: formData.get("type"),
+      email: formData.get("email"),
+      topic: formData.get("topic"),
+      details: formData.get("details"),
+    };
+
+    try {
+      const res = await fetch("/api/requests/event", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (!res.ok) throw new Error("Failed to submit");
+      
+      setIsSubmitted(true);
+      toast.success("Event request submitted successfully!");
+    } catch (error) {
+      toast.error("Failed to submit request. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -62,7 +80,7 @@ export default function EventsPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <label className="text-sm font-semibold text-gray-700">Type of Event</label>
-                    <Select required>
+                    <Select name="type" required>
                       <SelectTrigger>
                         <SelectValue placeholder="Select type" />
                       </SelectTrigger>
@@ -75,18 +93,19 @@ export default function EventsPage() {
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-semibold text-gray-700">Your Email</label>
-                    <Input type="email" placeholder="alex@gmail.com" required />
+                    <Input name="email" type="email" placeholder="alex@gmail.com" required />
                   </div>
                 </div>
 
                 <div className="space-y-2">
                   <label className="text-sm font-semibold text-gray-700">Proposed Agenda/Topic</label>
-                  <Input placeholder="e.g. Building with AI Agents in 2026" required />
+                  <Input name="topic" placeholder="e.g. Building with AI Agents in 2026" required />
                 </div>
 
                 <div className="space-y-2">
                   <label className="text-sm font-semibold text-gray-700">Agenda Details / Ideas to Review</label>
                   <Textarea 
+                    name="details"
                     placeholder="Tell us what you'd like to see, talk about, or learn..." 
                     className="min-h-[120px]" 
                     required 
