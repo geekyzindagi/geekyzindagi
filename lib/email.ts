@@ -1,8 +1,14 @@
-import { Resend } from "resend";
+import nodemailer from "nodemailer";
 
-const resend = process.env.RESEND_API_KEY 
-  ? new Resend(process.env.RESEND_API_KEY)
-  : null;
+const transporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST,
+  port: Number(process.env.SMTP_PORT),
+  secure: Number(process.env.SMTP_PORT) === 465, // true for 465, false for other ports
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASSWORD,
+  },
+});
 
 const FROM_EMAIL = process.env.FROM_EMAIL || "noreply@geekyzindagi.com";
 const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME || "GeekyZindagi";
@@ -16,23 +22,15 @@ interface EmailOptions {
 }
 
 export async function sendEmail({ to, subject, html, text }: EmailOptions) {
-  // Skip sending if no API key configured
-  if (!resend) {
-    console.log(`[Email] Skipping email (no RESEND_API_KEY configured)`);
-    console.log(`[Email] Would send to: ${to}`);
-    console.log(`[Email] Subject: ${subject}`);
-    return { success: true, data: { id: "skipped-no-api-key" } };
-  }
-
   try {
-    const data = await resend.emails.send({
-      from: `${APP_NAME} <${FROM_EMAIL}>`,
+    const info = await transporter.sendMail({
+      from: `"${APP_NAME}" <${FROM_EMAIL}>`,
       to,
       subject,
       html,
       text: text || html.replace(/<[^>]*>/g, ""),
     });
-    return { success: true, data };
+    return { success: true, data: info };
   } catch (error) {
     console.error("Failed to send email:", error);
     return { success: false, error };
