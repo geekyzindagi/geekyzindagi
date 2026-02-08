@@ -18,6 +18,11 @@ import {
   Rocket,
   Microscope,
   Lightbulb,
+  Cpu,
+  Leaf,
+  ChefHat,
+  Trophy,
+  Footprints,
 } from "lucide-react";
 import { ParallaxLayer } from "./effects";
 
@@ -28,8 +33,17 @@ const domainGroups = {
     gradient: "from-indigo-500 to-cyan-500",
     items: [
       { name: "Neuroscience", icon: Brain },
-      { name: "Psychology", icon: Microscope },
-      { name: "Human Behaviour", icon: Lightbulb },
+      { name: "Quantum Computing", icon: Cpu },
+      { name: "Consciousness", icon: Sparkles },
+    ],
+  },
+  knowledge: {
+    title: "Knowledge & Tools",
+    emoji: "📚",
+    gradient: "from-amber-500 to-orange-500",
+    items: [
+      { name: "Books", icon: BookOpen },
+      { name: "Tools", icon: Sparkles },
     ],
   },
   creative: {
@@ -49,6 +63,8 @@ const domainGroups = {
     items: [
       { name: "Wellness", icon: Heart },
       { name: "Training", icon: Dumbbell },
+      { name: "Indoor Sports", icon: Trophy },
+      { name: "Outdoor Sports", icon: Footprints },
     ],
   },
   tech: {
@@ -76,6 +92,8 @@ const domainGroups = {
     gradient: "from-purple-500 to-pink-500",
     items: [
       { name: "Culinary", icon: UtensilsCrossed },
+      { name: "Foodie", icon: ChefHat },
+      { name: "Gardening", icon: Leaf },
       { name: "Gaming", icon: Gamepad2 },
       { name: "Reading", icon: BookOpen },
     ],

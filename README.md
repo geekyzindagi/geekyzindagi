@@ -13,7 +13,9 @@ GeekyZindagi is a multidisciplinary community platform designed for curious mind
 - **Admin Dashboard**: Comprehensive management interface for reviewing submissions, managing users, and inviting new members.
 - **Secure Authentication**: NextAuth v5 implementation with MFA support and email-based password resets.
 - **Automated Communication**: Professional email notifications powered by Brevo.
-- **Live GitHub Metrics**: Projects page synchronized with real GitHub stars and forks.
+- **The Full Spectrum of Life**: Support for diverse domains including Quantum Computing, Consciousness, Gardening, Sports, and Culinary Arts.
+- **Advanced Identity**: A centralized brand system with a dynamic animated logo and an interactive typewriter hero section that adapts to the community's evolving interests.
+- **Live GitHub Metrics**: Projects page synchronized with real GitHub stars and forks via a high-performance cached API layer.
 
 ## 🛠 Tech Stack
 
