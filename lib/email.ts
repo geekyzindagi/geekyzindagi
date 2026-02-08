@@ -1,8 +1,14 @@
-import { Resend } from "resend";
+import nodemailer from "nodemailer";
 
-const resend = process.env.RESEND_API_KEY 
-  ? new Resend(process.env.RESEND_API_KEY)
-  : null;
+const transporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST,
+  port: Number(process.env.SMTP_PORT),
+  secure: Number(process.env.SMTP_PORT) === 465, // true for 465, false for other ports
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASSWORD,
+  },
+});
 
 const FROM_EMAIL = process.env.FROM_EMAIL || "noreply@geekyzindagi.com";
 const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME || "GeekyZindagi";
@@ -16,23 +22,15 @@ interface EmailOptions {
 }
 
 export async function sendEmail({ to, subject, html, text }: EmailOptions) {
-  // Skip sending if no API key configured
-  if (!resend) {
-    console.log(`[Email] Skipping email (no RESEND_API_KEY configured)`);
-    console.log(`[Email] Would send to: ${to}`);
-    console.log(`[Email] Subject: ${subject}`);
-    return { success: true, data: { id: "skipped-no-api-key" } };
-  }
-
   try {
-    const data = await resend.emails.send({
-      from: `${APP_NAME} <${FROM_EMAIL}>`,
+    const info = await transporter.sendMail({
+      from: `"${APP_NAME}" <${FROM_EMAIL}>`,
       to,
       subject,
       html,
       text: text || html.replace(/<[^>]*>/g, ""),
     });
-    return { success: true, data };
+    return { success: true, data: info };
   } catch (error) {
     console.error("Failed to send email:", error);
     return { success: false, error };
@@ -42,7 +40,6 @@ export async function sendEmail({ to, subject, html, text }: EmailOptions) {
 export async function sendInviteEmail(
   email: string,
   token: string,
-  inviterName: string,
   message?: string
 ) {
   const inviteUrl = `${APP_URL}/invite/${token}`;
@@ -61,7 +58,7 @@ export async function sendInviteEmail(
         </div>
         <div style="background: #f9fafb; padding: 30px; border-radius: 0 0 10px 10px;">
           <h2 style="color: #1f2937; margin-top: 0;">You've Been Invited! 🎉</h2>
-          <p><strong>${inviterName}</strong> has invited you to join ${APP_NAME}.</p>
+          <p>You have been invited to join ${APP_NAME}.</p>
           ${message ? `<p style="background: #e5e7eb; padding: 15px; border-radius: 8px; font-style: italic;">"${message}"</p>` : ""}
           <p>Click the button below to accept your invitation and create your account:</p>
           <div style="text-align: center; margin: 30px 0;">
@@ -80,7 +77,7 @@ export async function sendInviteEmail(
 
   return sendEmail({
     to: email,
-    subject: `${inviterName} invited you to join ${APP_NAME}`,
+    subject: `Invitation to join ${APP_NAME}`,
     html,
   });
 }

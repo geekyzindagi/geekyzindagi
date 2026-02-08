@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { ideaSubmissionSchema } from "@/lib/validations/idea";
+import { auth } from "@/lib/auth";
 
 // Simple in-memory rate limiting (use Redis in production)
 const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
@@ -22,6 +23,31 @@ function isRateLimited(ip: string): boolean {
 
   record.count++;
   return false;
+}
+
+// GET /api/ideas - Admin only: fetch all ideas
+export async function GET() {
+  try {
+    const session = await auth();
+
+    if (!session || !["ADMIN", "SUPER_ADMIN"].includes(session.user.role)) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const ideas = await prisma.ideaSubmission.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    return NextResponse.json(ideas);
+  } catch (error) {
+    console.error("Fetch ideas error:", error);
+    return NextResponse.json(
+      { error: "Failed to fetch ideas" },
+      { status: 500 }
+    );
+  }
 }
 
 // POST /api/ideas - Public endpoint to submit an idea

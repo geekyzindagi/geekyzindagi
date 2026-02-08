@@ -2,7 +2,8 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Twitter, Linkedin } from "lucide-react";
+import { Twitter, Github, Youtube, Instagram, Mail } from "lucide-react";
+import { Logo } from "@/components/ui/logo";
 
 const links = {
   explore: [
@@ -13,18 +14,19 @@ const links = {
   resources: [
     { name: "Blog", href: "/blog" },
     { name: "Projects", href: "/projects" },
-    { name: "Newsletter", href: "/newsletter" },
   ],
   community: [
-    { name: "Discord", href: "#" },
     { name: "Events", href: "/events" },
     { name: "Mentorship", href: "/mentorship" },
   ],
 };
 
 const socials = [
-  { icon: Twitter, href: "#", label: "Twitter" },
-  { icon: Linkedin, href: "#", label: "LinkedIn" },
+  { icon: Twitter, href: "https://twitter.com/geekyzindagi", label: "Twitter" },
+  { icon: Github, href: "https://github.com/geekyzindagi", label: "GitHub" },
+  { icon: Youtube, href: "https://youtube.com/@geekyzindagi", label: "YouTube" },
+  { icon: Instagram, href: "https://instagram.com/geekyzindagi", label: "Instagram" },
+  { icon: Mail, href: "mailto:hello@geekyzindagi.com", label: "Email" },
 ];
 
 export function FooterNotion() {
@@ -35,9 +37,7 @@ export function FooterNotion() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
             {/* Brand */}
             <div className="col-span-2 md:col-span-1">
-              <div className="text-lg font-bold text-gray-900 mb-3">
-                GeekyZindagi
-              </div>
+              <Logo className="mb-3" />
               <p className="text-sm text-gray-600 mb-4">
                 Learn. Build. Create. Repeat.
               </p>

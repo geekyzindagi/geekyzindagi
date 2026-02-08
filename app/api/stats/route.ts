@@ -1,29 +1,33 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = "force-dynamic";
+
 // GET /api/stats - Public endpoint for community stats
 export async function GET() {
   try {
-    // Count explorers (idea submissions that haven't converted yet)
-    const explorersCount = await prisma.ideaSubmission.count({
-      where: {
-        convertedUserId: null,
-      },
-    });
+    // Count explorers (total ideas shared)
+    const explorersCount = await prisma.ideaSubmission.count();
 
-    // Count builders (active users with BUILDER tier)
+    // Count builders (active users with BUILDER tier OR ADMIN role)
     const buildersCount = await prisma.user.count({
       where: {
         status: "ACTIVE",
-        memberTier: "BUILDER",
+        OR: [
+          { memberTier: "BUILDER" },
+          { role: "ADMIN" }
+        ]
       },
     });
 
-    // Count elders (active users with ELDER tier)
+    // Count elders (active users with ELDER tier OR SUPER_ADMIN role)
     const eldersCount = await prisma.user.count({
       where: {
         status: "ACTIVE",
-        memberTier: "ELDER",
+        OR: [
+          { memberTier: "ELDER" },
+          { role: "SUPER_ADMIN" }
+        ]
       },
     });
 

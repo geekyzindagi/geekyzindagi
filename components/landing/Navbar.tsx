@@ -6,6 +6,7 @@ import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import type { Session } from "next-auth";
+import { Logo } from "@/components/ui/logo";
 
 const navLinks = [
   { label: "Story", href: "#story" },
@@ -54,11 +55,7 @@ export function Navbar({ session }: NavbarProps) {
         <div className="container mx-auto px-4 py-4 relative z-10">
           <div className="flex justify-between items-center">
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-2">
-              <span className="text-xl font-bold bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
-                GeekyZindagi
-              </span>
-            </Link>
+            <Logo />
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center gap-8">

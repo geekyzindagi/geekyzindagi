@@ -91,7 +91,88 @@ const domains = [
     category: "fitness",
     description: "Bodyweight mastery, street workout",
   },
+  {
+    name: "Indoor Sports",
+    icon: Gamepad2,
+    color: "#8b5cf6",
+    category: "fitness",
+    description: "Badminton, table tennis, swimming",
+  },
+  {
+    name: "Outdoor Sports",
+    icon: Footprints,
+    color: "#f59e0b",
+    category: "fitness",
+    description: "Cricket, football, trekking",
+  },
+  // Mind & Science
+  {
+    name: "Neuroscience",
+    icon: Brain,
+    color: "#06b6d4",
+    category: "science",
+    description: "Brain structure and function",
+  },
+  {
+    name: "Psychology",
+    icon: Heart,
+    color: "#8b5cf6",
+    category: "science",
+    description: "Human behavior and mental processes",
+  },
+  {
+    name: "Human Behaviour",
+    icon: PersonStanding,
+    color: "#ec4899",
+    category: "science",
+    description: "Social dynamics and behavioral patterns",
+  },
+  {
+    name: "EEG",
+    icon: Network,
+    color: "#22c55e",
+    category: "science",
+    description: "Brainwave monitoring and neurofeedback",
+  },
+  {
+    name: "Quantum Computing",
+    icon: Cpu,
+    color: "#06b6d4",
+    category: "science",
+    description: "Quantum mechanics in computation",
+  },
+  {
+    name: "Consciousness",
+    icon: Brain,
+    color: "#8b5cf6",
+    category: "science",
+    description: "The study of awareness and being",
+  },
 
+  // Knowledge & Tools
+  {
+    name: "Books & Literature",
+    icon: BookOpen,
+    color: "#6366f1",
+    category: "education",
+    description: "Exploration through reading and writing",
+  },
+  {
+    name: "Learning Tools",
+    icon: Sparkles,
+    color: "#10b981",
+    category: "education",
+    description: "Frameworks and tools for growth",
+  },
+
+  // Startups & Business
+  {
+    name: "Startup",
+    icon: Sparkles,
+    color: "#f59e0b",
+    category: "business",
+    description: "Building, scaling, and entrepreneurship",
+  },
   // Tech & Engineering
   {
     name: "IoT & Hardware",
@@ -143,6 +224,13 @@ const domains = [
     color: "#f59e0b",
     category: "lifestyle",
     description: "Cooking, recipes, food culture",
+  },
+  {
+    name: "Gardening",
+    icon: Footprints,
+    color: "#84cc16",
+    category: "lifestyle",
+    description: "Plants, urban farming, urban gardening",
   },
   {
     name: "Gaming",

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Session } from "next-auth";
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
+import { Logo } from "@/components/ui/logo";
 
 interface NavbarAliveProps {
   session: Session | null;
@@ -52,17 +53,7 @@ export function NavbarAlive({ session }: NavbarAliveProps) {
           >
             <div className="flex items-center justify-between h-16">
               {/* Logo */}
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Link href="/" className="text-lg font-bold relative">
-                  <span>GeekyZindagi</span>
-                  <motion.div
-                    className="absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-purple-500 to-pink-500"
-                    initial={{ width: 0 }}
-                    whileHover={{ width: "100%" }}
-                    transition={{ duration: 0.2 }}
-                  />
-                </Link>
-              </motion.div>
+              <Logo />
 
               {/* Desktop nav links */}
               <div className="hidden md:flex items-center gap-1">

@@ -2,7 +2,8 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Twitter, Mail } from "lucide-react";
+import { Twitter, Mail, Github, Youtube, Instagram } from "lucide-react";
+import { Logo } from "@/components/ui/logo";
 
 const footerLinks = {
   community: [
@@ -23,6 +24,9 @@ const footerLinks = {
 
 const socialLinks = [
   { icon: Twitter, href: "https://twitter.com/geekyzindagi", label: "Twitter" },
+  { icon: Github, href: "https://github.com/geekyzindagi", label: "GitHub" },
+  { icon: Youtube, href: "https://youtube.com/@geekyzindagi", label: "YouTube" },
+  { icon: Instagram, href: "https://instagram.com/geekyzindagi", label: "Instagram" },
   { icon: Mail, href: "mailto:hello@geekyzindagi.com", label: "Email" },
 ];
 
@@ -37,11 +41,7 @@ export function Footer() {
         <div className="py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Brand column */}
           <div className="lg:col-span-1">
-            <Link href="/" className="inline-block mb-4">
-              <span className="text-2xl font-bold bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
-                GeekyZindagi
-              </span>
-            </Link>
+            <Logo className="mb-4" />
             <p className="text-muted-foreground text-sm leading-relaxed mb-6">
               A tribe of curious minds exploring life through learning, building,
               and mentoring. Where geeks become family.

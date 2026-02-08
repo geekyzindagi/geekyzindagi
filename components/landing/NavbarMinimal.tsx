@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Session } from "next-auth";
+import { Logo } from "@/components/ui/logo";
 
 interface NavbarMinimalProps {
   session: Session | null;
@@ -19,9 +20,7 @@ export function NavbarMinimal({ session }: NavbarMinimalProps) {
       <div className="container mx-auto px-6">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link href="/" className="text-lg font-bold">
-            GeekyZindagi
-          </Link>
+          <Logo />
 
           {/* Nav links */}
           <div className="hidden md:flex items-center gap-8">

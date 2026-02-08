@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Users, UserPlus, ChevronRight } from "lucide-react";
+import { Users, UserPlus, ChevronRight, Lightbulb } from "lucide-react";
 import {
   Card,
   CardDescription,
@@ -21,6 +21,12 @@ const userOptions = [
     title: "Invitations",
     description: "Manage user invitations and access control",
     icon: UserPlus,
+  },
+  {
+    href: "/admin/ideas",
+    title: "Idea Submissions",
+    description: "Review ideas submitted by potential Explorers",
+    icon: Lightbulb,
   },
 ];
 

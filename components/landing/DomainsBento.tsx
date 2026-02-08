@@ -15,10 +15,37 @@ import {
   Gamepad2,
   BookOpen,
   Sparkles,
+  Rocket,
+  Microscope,
+  Lightbulb,
+  Cpu,
+  Leaf,
+  ChefHat,
+  Trophy,
+  Footprints,
 } from "lucide-react";
 import { ParallaxLayer } from "./effects";
 
 const domainGroups = {
+  science: {
+    title: "Mind & Science",
+    emoji: "🧠",
+    gradient: "from-indigo-500 to-cyan-500",
+    items: [
+      { name: "Neuroscience", icon: Brain },
+      { name: "Quantum Computing", icon: Cpu },
+      { name: "Consciousness", icon: Sparkles },
+    ],
+  },
+  knowledge: {
+    title: "Knowledge & Tools",
+    emoji: "📚",
+    gradient: "from-amber-500 to-orange-500",
+    items: [
+      { name: "Books", icon: BookOpen },
+      { name: "Tools", icon: Sparkles },
+    ],
+  },
   creative: {
     title: "Creative Arts",
     emoji: "🎨",
@@ -36,6 +63,8 @@ const domainGroups = {
     items: [
       { name: "Wellness", icon: Heart },
       { name: "Training", icon: Dumbbell },
+      { name: "Indoor Sports", icon: Trophy },
+      { name: "Outdoor Sports", icon: Footprints },
     ],
   },
   tech: {
@@ -48,12 +77,23 @@ const domainGroups = {
       { name: "DevOps", icon: Code2 },
     ],
   },
+  startup: {
+    title: "Startups",
+    emoji: "🚀",
+    gradient: "from-emerald-500 to-teal-500",
+    items: [
+      { name: "Business", icon: Rocket },
+      { name: "Strategy", icon: Lightbulb },
+    ],
+  },
   lifestyle: {
     title: "Lifestyle",
     emoji: "✨",
     gradient: "from-purple-500 to-pink-500",
     items: [
       { name: "Culinary", icon: UtensilsCrossed },
+      { name: "Foodie", icon: ChefHat },
+      { name: "Gardening", icon: Leaf },
       { name: "Gaming", icon: Gamepad2 },
       { name: "Reading", icon: BookOpen },
     ],
