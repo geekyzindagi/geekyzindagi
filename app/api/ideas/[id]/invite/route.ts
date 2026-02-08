@@ -90,7 +90,6 @@ export async function POST(
     const emailResult = await sendInviteEmail(
       idea.email,
       token,
-      session.user.name || "An admin",
       `I loved your idea for "${idea.title}"! I'd like to invite you to join GeekyZindagi as a Builder.`
     );
 

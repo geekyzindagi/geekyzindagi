@@ -40,7 +40,6 @@ export async function sendEmail({ to, subject, html, text }: EmailOptions) {
 export async function sendInviteEmail(
   email: string,
   token: string,
-  inviterName: string,
   message?: string
 ) {
   const inviteUrl = `${APP_URL}/invite/${token}`;
@@ -59,7 +58,7 @@ export async function sendInviteEmail(
         </div>
         <div style="background: #f9fafb; padding: 30px; border-radius: 0 0 10px 10px;">
           <h2 style="color: #1f2937; margin-top: 0;">You've Been Invited! 🎉</h2>
-          <p><strong>${inviterName}</strong> has invited you to join ${APP_NAME}.</p>
+          <p>You have been invited to join ${APP_NAME}.</p>
           ${message ? `<p style="background: #e5e7eb; padding: 15px; border-radius: 8px; font-style: italic;">"${message}"</p>` : ""}
           <p>Click the button below to accept your invitation and create your account:</p>
           <div style="text-align: center; margin: 30px 0;">
@@ -78,7 +77,7 @@ export async function sendInviteEmail(
 
   return sendEmail({
     to: email,
-    subject: `${inviterName} invited you to join ${APP_NAME}`,
+    subject: `Invitation to join ${APP_NAME}`,
     html,
   });
 }

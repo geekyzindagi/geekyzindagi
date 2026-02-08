@@ -78,7 +78,6 @@ export async function POST(req: NextRequest) {
     const emailResult = await sendInviteEmail(
       email,
       token,
-      session.user.name || "An admin",
       message
     );
 

@@ -14,11 +14,11 @@ export async function GET() {
       orderBy: { createdAt: "desc" },
     });
 
-    const mentorships = await prisma.mentorshipRequest.findMany({
+    const mentorship = await prisma.mentorshipRequest.findMany({
       orderBy: { createdAt: "desc" },
     });
 
-    return NextResponse.json({ events, mentorships });
+    return NextResponse.json({ events, mentorship });
   } catch (error) {
     console.error("Fetch requests error:", error);
     return NextResponse.json({ error: "Failed to fetch requests" }, { status: 500 });

@@ -31,25 +31,25 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { format } from "date-fns";
 
-type RequestStatus = "PENDING" | "REVIEWED" | "ACCEPTED" | "REJECTED";
+type RequestStatus = "PENDING" | "REVIEWED" | "CONTACTED" | "ARCHIVED";
 
 interface BaseRequest {
   id: string;
-  name: string;
   email: string;
-  message: string;
   status: RequestStatus;
   createdAt: string;
 }
 
 interface EventRequest extends BaseRequest {
-  eventType: string;
-  expectedDate?: string;
-  location?: string;
+  type: string;
+  topic: string;
+  details: string;
 }
 
 interface MentorshipRequest extends BaseRequest {
+  name: string;
   role: string;
+  message: string;
   portfolio?: string;
 }
 
@@ -80,8 +80,8 @@ export default function AdminRequestsPage() {
     const variants: Record<RequestStatus, string> = {
       PENDING: "bg-yellow-100 text-yellow-700 hover:bg-yellow-100",
       REVIEWED: "bg-blue-100 text-blue-700 hover:bg-blue-100",
-      ACCEPTED: "bg-green-100 text-green-700 hover:bg-green-100",
-      REJECTED: "bg-red-100 text-red-700 hover:bg-red-100",
+      CONTACTED: "bg-green-100 text-green-700 hover:bg-green-100",
+      ARCHIVED: "bg-gray-100 text-gray-700 hover:bg-gray-100",
     };
     return (
       <Badge variant="secondary" className={variants[status]}>
@@ -118,7 +118,7 @@ export default function AdminRequestsPage() {
                 <Card key={request.id} className="overflow-hidden hover:shadow-md transition-shadow">
                   <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2">
                     <div className="space-y-1">
-                      <CardTitle className="text-xl">{request.name}</CardTitle>
+                      <CardTitle className="text-xl">{request.topic}</CardTitle>
                       <CardDescription className="flex items-center gap-2">
                         <Mail className="w-3 h-3" />
                         {request.email}
@@ -130,17 +130,13 @@ export default function AdminRequestsPage() {
                     <div className="grid grid-cols-2 gap-4 text-sm">
                       <div className="space-y-1">
                         <p className="font-semibold text-muted-foreground">Type</p>
-                        <Badge variant="outline">{request.eventType}</Badge>
-                      </div>
-                      <div className="space-y-1">
-                        <p className="font-semibold text-muted-foreground">Date</p>
-                        <p>{request.expectedDate ? format(new Date(request.expectedDate), "PPP") : "TBD"}</p>
+                        <Badge variant="outline" className="capitalize">{request.type}</Badge>
                       </div>
                     </div>
                     <div className="space-y-2">
-                      <p className="text-sm font-semibold text-muted-foreground">Message</p>
+                      <p className="text-sm font-semibold text-muted-foreground">Details</p>
                       <p className="text-sm border rounded-lg p-3 bg-muted/50 leading-relaxed italic">
-                        &quot;{request.message}&quot;
+                        &quot;{request.details}&quot;
                       </p>
                     </div>
                     <div className="flex items-center justify-between text-xs text-muted-foreground pt-2">
