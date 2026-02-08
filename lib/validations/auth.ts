@@ -126,6 +126,16 @@ export const acceptInviteSchema = z
 
 // ============ USER SCHEMAS ============
 
+export const userSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  email: z.string().email(),
+  image: z.string().optional().nullable(),
+  role: z.enum(["USER", "ADMIN", "SUPER_ADMIN"]),
+  mfaEnabled: z.boolean(),
+  status: z.enum(["PENDING", "ACTIVE", "SUSPENDED", "DELETED"]),
+});
+
 export const updateProfileSchema = z.object({
   name: z
     .string()
@@ -147,3 +157,4 @@ export type MfaVerifyInput = z.infer<typeof mfaVerifySchema>;
 export type InviteInput = z.infer<typeof inviteSchema>;
 export type AcceptInviteInput = z.infer<typeof acceptInviteSchema>;
 export type UpdateProfileInput = z.infer<typeof updateProfileSchema>;
+export type User = z.infer<typeof userSchema>;

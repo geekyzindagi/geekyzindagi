@@ -11,9 +11,12 @@ interface NavbarNotionProps {
 }
 
 const navLinks = [
-  { name: "Journey", href: "#story" },
-  { name: "Explore", href: "#domains" },
-  { name: "About", href: "#features" },
+  { name: "Journey", href: "/#story" },
+  { name: "Explore", href: "/#domains" },
+  { name: "Events", href: "/events" },
+  { name: "Mentorship", href: "/mentorship" },
+  { name: "Projects", href: "/projects" },
+  { name: "Blog", href: "/blog" },
 ];
 
 export function NavbarNotion({ session }: NavbarNotionProps) {

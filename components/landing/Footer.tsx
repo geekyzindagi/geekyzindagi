@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Twitter, Mail } from "lucide-react";
+import { Twitter, Mail, Github, Youtube, Instagram } from "lucide-react";
 
 const footerLinks = {
   community: [
@@ -23,6 +23,9 @@ const footerLinks = {
 
 const socialLinks = [
   { icon: Twitter, href: "https://twitter.com/geekyzindagi", label: "Twitter" },
+  { icon: Github, href: "https://github.com/geekyzindagi", label: "GitHub" },
+  { icon: Youtube, href: "https://youtube.com/@geekyzindagi", label: "YouTube" },
+  { icon: Instagram, href: "https://instagram.com/geekyzindagi", label: "Instagram" },
   { icon: Mail, href: "mailto:hello@geekyzindagi.com", label: "Email" },
 ];
 

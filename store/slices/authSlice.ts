@@ -1,13 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  image?: string;
-  role: "USER" | "ADMIN" | "SUPER_ADMIN";
-  mfaEnabled: boolean;
-}
+import { type User, userSchema } from "@/lib/validations/auth";
 
 interface AuthState {
   user: User | null;
@@ -30,6 +22,15 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, action: PayloadAction<User | null>) => {
+      // Validate payload with Zod if it's not null
+      if (action.payload) {
+        const result = userSchema.safeParse(action.payload);
+        if (!result.success) {
+          console.error("Invalid user data provided to Redux:", result.error);
+          return;
+        }
+      }
+
       state.user = action.payload;
       state.isAuthenticated = !!action.payload;
       state.isLoading = false;

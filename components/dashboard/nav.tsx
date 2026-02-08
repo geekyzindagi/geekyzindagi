@@ -14,7 +14,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Settings, LogOut, User, Shield, Users } from "lucide-react";
+import { Settings, LogOut, User, Shield, Users, Lightbulb } from "lucide-react";
 
 interface DashboardNavProps {
   user: {
@@ -32,7 +32,10 @@ export function DashboardNav({ user }: DashboardNavProps) {
 
   const navItems = [
     { href: "/dashboard", label: "Dashboard" },
-    ...(isAdmin ? [{ href: "/admin/invites", label: "Invites" }] : []),
+    ...(isAdmin ? [
+      { href: "/admin/invites", label: "Invites" },
+      { href: "/admin/ideas", label: "Ideas" }
+    ] : []),
   ];
 
   return (

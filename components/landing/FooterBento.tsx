@@ -4,8 +4,9 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import {
   Twitter,
-  Linkedin,
   Youtube,
+  Github,
+  Instagram,
   Heart,
   Sparkles,
   Mail,
@@ -28,13 +29,11 @@ const footerLinks = {
       { name: "Blog", href: "/blog" },
       { name: "Tutorials", href: "/tutorials" },
       { name: "Projects", href: "/projects" },
-      { name: "Newsletter", href: "/newsletter" },
     ],
   },
   community: {
     title: "Community",
     links: [
-      { name: "Discord", href: "#" },
       { name: "Events", href: "/events" },
       { name: "Mentorship", href: "/mentorship" },
       { name: "Contribute", href: "/contribute" },
@@ -51,10 +50,11 @@ const footerLinks = {
 };
 
 const socialLinks = [
-
-  { icon: Twitter, href: "#", label: "Twitter" },
-  { icon: Linkedin, href: "#", label: "LinkedIn" },
-  { icon: Youtube, href: "#", label: "YouTube" },
+  { icon: Twitter, href: "https://twitter.com/geekyzindagi", label: "Twitter" },
+  { icon: Github, href: "https://github.com/geekyzindagi", label: "GitHub" },
+  { icon: Youtube, href: "https://youtube.com/@geekyzindagi", label: "YouTube" },
+  { icon: Instagram, href: "https://instagram.com/geekyzindagi", label: "Instagram" },
+  { icon: Mail, href: "mailto:hello@geekyzindagi.com", label: "Email" },
 ];
 
 export function FooterBento() {

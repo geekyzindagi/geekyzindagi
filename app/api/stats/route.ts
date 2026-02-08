@@ -13,11 +13,14 @@ export async function GET() {
       },
     });
 
-    // Count builders (active users with BUILDER tier)
+    // Count builders (active users with BUILDER tier OR ADMIN/SUPER_ADMIN roles)
     const buildersCount = await prisma.user.count({
       where: {
         status: "ACTIVE",
-        memberTier: "BUILDER",
+        OR: [
+          { memberTier: "BUILDER" },
+          { role: { in: ["ADMIN", "SUPER_ADMIN"] } }
+        ]
       },
     });
 
