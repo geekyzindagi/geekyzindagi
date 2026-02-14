@@ -5,13 +5,13 @@ import type { NextRequest } from "next/server";
 const protectedRoutes = ["/dashboard", "/settings", "/admin"];
 
 // Routes that require MFA verification
-const mfaProtectedRoutes = ["/dashboard", "/settings", "/admin"];
+// const mfaProtectedRoutes = ["/dashboard", "/settings", "/admin"];
 
 // Routes only accessible when NOT authenticated
 const authRoutes = ["/login", "/register", "/forgot-password"];
 
 // Admin-only routes
-const adminRoutes = ["/admin"];
+// const adminRoutes = ["/admin"];
 
 export async function middleware(req: NextRequest) {
   const { nextUrl } = req;
@@ -23,7 +23,7 @@ export async function middleware(req: NextRequest) {
   // For basic protection, existence of token is enough for redirects.
   // Advanced checks (like MFA/Admin) will be handled in the client components for now
   // or until we add 'jose' to decode JWT here.
-  const user = null;
+  // const user = null;
 
   const isProtectedRoute = protectedRoutes.some((route) =>
     nextUrl.pathname.startsWith(route)
@@ -31,13 +31,13 @@ export async function middleware(req: NextRequest) {
   const isAuthRoute = authRoutes.some((route) =>
     nextUrl.pathname.startsWith(route)
   );
-  const isAdminRoute = adminRoutes.some((route) =>
-    nextUrl.pathname.startsWith(route)
-  );
-  const isMfaProtected = mfaProtectedRoutes.some((route) =>
-    nextUrl.pathname.startsWith(route)
-  );
-  const isMfaVerifyRoute = nextUrl.pathname.startsWith("/mfa-verify");
+  // const isAdminRoute = adminRoutes.some((route) =>
+  //   nextUrl.pathname.startsWith(route)
+  // );
+  // const isMfaProtected = mfaProtectedRoutes.some((route) =>
+  //   nextUrl.pathname.startsWith(route)
+  // );
+  // const isMfaVerifyRoute = nextUrl.pathname.startsWith("/mfa-verify");
 
   // Redirect unauthenticated users to login
   if (isProtectedRoute && !isLoggedIn) {
