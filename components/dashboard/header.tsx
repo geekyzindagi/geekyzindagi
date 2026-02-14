@@ -1,6 +1,4 @@
-"use client";
-
-import { signOut } from "next-auth/react";
+import { useAuth } from "@/context/AuthContext";
 import { Bell, Search, Menu } from "lucide-react";
 import {
   DropdownMenu,
@@ -33,6 +31,7 @@ interface HeaderProps {
 }
 
 export function Header({ user }: HeaderProps) {
+  const { logout } = useAuth();
   const isAdmin = ["ADMIN", "SUPER_ADMIN"].includes(user.role);
 
   return (
@@ -129,7 +128,7 @@ export function Header({ user }: HeaderProps) {
             <DropdownMenuSeparator />
             <DropdownMenuItem
               className="cursor-pointer text-red-600 focus:text-red-600"
-              onClick={() => signOut({ callbackUrl: "/login" })}
+              onClick={logout}
             >
               <LogOut className="mr-2 h-4 w-4" />
               Sign Out

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useSession } from "next-auth/react";
+import { useAuth } from "@/context/AuthContext";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
@@ -38,10 +38,10 @@ import {
   mfaSetupSchema,
   type MfaSetupInput,
 } from "@/lib/validations/auth";
-import { apiClient } from "@/lib/axios";
+import { apiClient } from "@/lib/api-client";
 
 export default function MfaSettingsPage() {
-  const { data: session, update } = useSession();
+  const { user, updateUser } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
 
   // MFA Setup State
@@ -81,7 +81,7 @@ export default function MfaSettingsPage() {
     try {
       const response = await apiClient.post<{ backupCodes: string[] }>("/auth/mfa/verify-setup", data);
       setBackupCodes(response.data.backupCodes);
-      await update({ mfaEnabled: true });
+      updateUser({ mfaEnabled: true });
       form.reset();
       toast.success("MFA enabled successfully!");
     } catch (error: unknown) {
@@ -96,7 +96,7 @@ export default function MfaSettingsPage() {
     setIsLoading(true);
     try {
       await apiClient.post("/auth/mfa/disable", { password: disablePassword });
-      await update({ mfaEnabled: false });
+      updateUser({ mfaEnabled: false });
       setShowDisableMfa(false);
       setDisablePassword("");
       toast.success("MFA disabled successfully");
@@ -151,7 +151,7 @@ export default function MfaSettingsPage() {
               <Smartphone className="h-5 w-5" />
               Authentication Status
             </span>
-            {session?.user?.mfaEnabled ? (
+            {user?.mfaEnabled ? (
               <Badge className="bg-green-500 hover:bg-green-600">
                 <ShieldCheck className="h-3 w-3 mr-1" />
                 Enabled
@@ -168,7 +168,7 @@ export default function MfaSettingsPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          {session?.user?.mfaEnabled ? (
+          {user?.mfaEnabled ? (
             <div className="space-y-4">
               <Alert className="border-green-200 bg-green-50">
                 <ShieldCheck className="h-4 w-4 text-green-600" />

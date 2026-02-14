@@ -3,7 +3,7 @@
 import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { signIn } from "next-auth/react";
+import { useAuth } from "@/context/AuthContext";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
@@ -32,6 +32,7 @@ import { loginSchema, type LoginInput } from "@/lib/validations/auth";
 
 function LoginForm() {
   const router = useRouter();
+  const { login } = useAuth();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
   const [isLoading, setIsLoading] = useState(false);
@@ -49,36 +50,28 @@ function LoginForm() {
   async function onSubmit(data: LoginInput) {
     setIsLoading(true);
     try {
-      const result = await signIn("credentials", {
-        email: data.email,
-        password: data.password,
-        redirect: false,
-      });
+      const result = await login(data.email, data.password) as { mfaRequired?: boolean; userId?: string };
 
-      if (result?.error) {
-        toast.error("Invalid email or password");
+      if (result?.mfaRequired) {
+        toast.info("MFA verification required");
+        router.push(`/mfa-verify?userId=${result.userId}&callbackUrl=${callbackUrl}`);
         return;
       }
 
       toast.success("Signed in successfully");
       router.push(callbackUrl);
-      router.refresh();
-    } catch {
-      toast.error("Something went wrong");
+    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const message = (error as any).response?.data?.message || "Invalid email or password";
+      toast.error(message);
     } finally {
       setIsLoading(false);
     }
   }
 
   async function handleOAuthSignIn(provider: string) {
-    setIsOAuthLoading(provider);
-    try {
-      await signIn(provider, { callbackUrl });
-    } catch {
-      toast.error("Something went wrong");
-    } finally {
-      setIsOAuthLoading(null);
-    }
+    // OAuth will be handled via backend redirect or specific provider library
+    toast.error("OAuth is currently being refactored");
   }
 
   return (

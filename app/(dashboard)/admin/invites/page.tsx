@@ -42,7 +42,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { inviteSchema, type InviteInput } from "@/lib/validations/auth";
-import { apiClient } from "@/lib/axios";
+import { apiClient } from "@/lib/api-client";
 
 interface Invite {
   id: string;
@@ -267,9 +267,8 @@ export default function AdminInvitesPage() {
                     <TableCell>
                       <Badge
                         variant="secondary"
-                        className={`${
-                          statusColors[invite.status as keyof typeof statusColors]
-                        } flex items-center gap-1 w-fit`}
+                        className={`${statusColors[invite.status as keyof typeof statusColors]
+                          } flex items-center gap-1 w-fit`}
                       >
                         {statusIcons[invite.status as keyof typeof statusIcons]}
                         {invite.status}

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useSession } from "next-auth/react";
+import { useAuth } from "@/context/AuthContext";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
@@ -26,17 +26,17 @@ import {
 } from "@/components/ui/form";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { updateProfileSchema, type UpdateProfileInput } from "@/lib/validations/auth";
-import { apiClient } from "@/lib/axios";
+import { apiClient } from "@/lib/api-client";
 
 export default function ProfileSettingsPage() {
-  const { data: session, update } = useSession();
+  const { user, updateUser } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<UpdateProfileInput>({
     resolver: zodResolver(updateProfileSchema),
     defaultValues: {
-      name: session?.user?.name || "",
-      image: session?.user?.image || "",
+      name: user?.fullName || "",
+      image: user?.avatar || "",
     },
   });
 
@@ -44,7 +44,7 @@ export default function ProfileSettingsPage() {
     setIsLoading(true);
     try {
       await apiClient.patch("/user", data);
-      await update({ name: data.name, image: data.image });
+      updateUser({ fullName: data.name, avatar: data.image });
       toast.success("Profile updated successfully");
     } catch {
       toast.error("Failed to update profile");
@@ -65,19 +65,19 @@ export default function ProfileSettingsPage() {
         <CardContent className="space-y-6">
           <div className="flex items-center gap-4">
             <Avatar className="h-20 w-20">
-              <AvatarImage src={session?.user?.image || undefined} />
+              <AvatarImage src={user?.avatar || undefined} />
               <AvatarFallback className="text-2xl">
-                {session?.user?.name
+                {user?.fullName
                   ?.split(" ")
                   .map((n) => n[0])
                   .join("")
-                  .toUpperCase() || "U"}
+                  .toUpperCase() || user?.username?.[0]?.toUpperCase() || "U"}
               </AvatarFallback>
             </Avatar>
             <div>
-              <p className="font-medium">{session?.user?.name}</p>
+              <p className="font-medium">{user?.fullName || user?.username}</p>
               <p className="text-sm text-muted-foreground">
-                {session?.user?.email}
+                {user?.email}
               </p>
             </div>
           </div>
@@ -138,18 +138,18 @@ export default function ProfileSettingsPage() {
           <div className="grid gap-4 md:grid-cols-2">
             <div>
               <p className="text-sm font-medium text-muted-foreground">Email</p>
-              <p className="font-medium">{session?.user?.email}</p>
+              <p className="font-medium">{user?.email}</p>
             </div>
             <div>
               <p className="text-sm font-medium text-muted-foreground">Role</p>
               <p className="font-medium capitalize">
-                {session?.user?.role?.toLowerCase().replace("_", " ")}
+                {user?.role?.toLowerCase().replace("_", " ")}
               </p>
             </div>
             <div>
               <p className="text-sm font-medium text-muted-foreground">Status</p>
               <p className="font-medium capitalize">
-                {session?.user?.status?.toLowerCase()}
+                {user?.status?.toLowerCase()}
               </p>
             </div>
             <div>
@@ -157,7 +157,7 @@ export default function ProfileSettingsPage() {
                 Two-Factor Auth
               </p>
               <p className="font-medium">
-                {session?.user?.mfaEnabled ? "Enabled" : "Disabled"}
+                {user?.mfaEnabled ? "Enabled" : "Disabled"}
               </p>
             </div>
           </div>

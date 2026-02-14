@@ -1,7 +1,7 @@
 "use client";
 
-import { motion, useInView, useMotionValue, useSpring } from "framer-motion";
-import { useRef, useEffect } from "react";
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
 
 const steps = [
   {
@@ -53,7 +53,7 @@ function StepIllustration({ emoji, color, isHovered }: { emoji: string; color: s
         }}
         transition={{ duration: 0.3 }}
       />
-      
+
       {/* Orbiting particles */}
       {[0, 1, 2].map((i) => (
         <motion.div
@@ -84,7 +84,7 @@ function StepIllustration({ emoji, color, isHovered }: { emoji: string; color: s
           }}
         />
       ))}
-      
+
       {/* Emoji */}
       <motion.div
         className="absolute inset-0 flex items-center justify-center text-3xl"
@@ -103,7 +103,7 @@ function StepIllustration({ emoji, color, isHovered }: { emoji: string; color: s
 function Step({ step, index }: { step: (typeof steps)[0]; index: number }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-50px" });
-  const isHovered = useMotionValue(false);
+  // const isHovered = useMotionValue(false);
   const [hovered, setHovered] = React.useState(false);
 
   return (
@@ -127,17 +127,17 @@ function Step({ step, index }: { step: (typeof steps)[0]; index: number }) {
         />
       )}
 
-      <motion.div 
+      <motion.div
         className="flex items-start gap-6 p-6 rounded-3xl transition-colors"
         animate={{
           backgroundColor: hovered ? "rgba(255,255,255,0.02)" : "transparent",
         }}
       >
         <StepIllustration emoji={step.emoji} color={step.color} isHovered={hovered} />
-        
+
         <div className="flex-1 pt-2">
           <div className="flex items-center gap-3 mb-2">
-            <motion.span 
+            <motion.span
               className="text-xs font-mono text-muted-foreground/50"
               animate={{ opacity: hovered ? 1 : 0.5 }}
             >
@@ -146,16 +146,16 @@ function Step({ step, index }: { step: (typeof steps)[0]; index: number }) {
             <motion.div
               className={`h-px flex-1 bg-gradient-to-r ${step.color}`}
               initial={{ scaleX: 0, opacity: 0 }}
-              animate={{ 
-                scaleX: hovered ? 1 : 0, 
-                opacity: hovered ? 0.5 : 0 
+              animate={{
+                scaleX: hovered ? 1 : 0,
+                opacity: hovered ? 0.5 : 0
               }}
               style={{ originX: 0 }}
               transition={{ duration: 0.3 }}
             />
           </div>
-          
-          <motion.h3 
+
+          <motion.h3
             className="text-2xl md:text-3xl font-semibold mb-2"
             animate={{
               color: hovered ? "#fff" : "rgba(255,255,255,0.9)",
@@ -165,8 +165,8 @@ function Step({ step, index }: { step: (typeof steps)[0]; index: number }) {
           >
             {step.title}
           </motion.h3>
-          
-          <motion.p 
+
+          <motion.p
             className="text-muted-foreground text-lg"
             animate={{ opacity: hovered ? 1 : 0.7 }}
           >
@@ -198,7 +198,7 @@ export function StoryAlive() {
             viewport={{ once: true }}
             className="mb-20"
           >
-            <motion.h2 
+            <motion.h2
               className="text-4xl md:text-6xl font-bold mb-4"
               whileHover={{ x: 5 }}
               transition={{ type: "spring", stiffness: 300 }}

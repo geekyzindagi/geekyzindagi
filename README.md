@@ -1,40 +1,33 @@
-# GeekyZindagi 🧠🚀
+# GeekyZindagi Frontend 🧠🚀
 
-GeekyZindagi is a multidisciplinary community platform designed for curious minds to learn, build, and explore life's various dimensions. Originally a tech-focused hub, it has evolved into a diverse ecosystem spanning Neuroscience, Startups, Art, Wellness, and more.
+GeekyZindagi is a multidisciplinary community platform designed for curious minds to learn, build, and explore life's various dimensions. This repository contains the **Frontend** application built with Next.js 15.
+
+It communicates with the [GeekyZindagi Core Backend](https://github.com/geekyzindagi/core-backend) for all data and authentication needs.
 
 ## ✨ Features
 
-- **Multidomain Idea Submission**: Share and explore ideas across diverse categories like AI, Neuroscience, EEG, Psychology, and Business Strategy.
-- **Role-Based Access Control (RBAC)**: Secure platform with distinct roles:
-    - **Explorers**: Submit ideas and join the community.
-    - **Builders (Admins)**: Manage technical facets and events.
-    - **Elders (Super Admins)**: Provide mentorship and oversight.
-- **Request Tracking**: Real-time data tracking for **Event Requests** and **Mentorship Opportunities**.
-- **Admin Dashboard**: Comprehensive management interface for reviewing submissions, managing users, and inviting new members.
-- **Secure Authentication**: NextAuth v5 implementation with MFA support and email-based password resets.
-- **Automated Communication**: Professional email notifications powered by Brevo.
-- **The Full Spectrum of Life**: Support for diverse domains including Quantum Computing, Consciousness, Gardening, Sports, and Culinary Arts.
-- **Advanced Identity**: A centralized brand system with a dynamic animated logo and an interactive typewriter hero section that adapts to the community's evolving interests.
-- **Live GitHub Metrics**: Projects page synchronized with real GitHub stars and forks via a high-performance cached API layer.
+- **Modern & Responsive UI**: Built with Tailwind CSS, Shadcn UI, and Framer Motion for a premium feel.
+- **Role-Based Access**: Specialized views for Explorers, Builders, and Elders.
+- **Multidomain Content**: Showcase and submit ideas across diverse categories (AI, Neuroscience, Art, etc.).
+- **Interactive Experience**: Dynamic hero sections, animated logos, and real-time feedback.
+- **Secure Authentication**: Integration with backend JWT-based auth and MFA flows.
+- **GitHub Integration**: Live metrics for projects via GitHub API.
 
 ## 🛠 Tech Stack
 
 - **Framework**: [Next.js 15 (App Router)](https://nextjs.org)
-- **Database**: [Prisma](https://www.prisma.io) with [MongoDB](https://www.mongodb.com)
-- **Auth**: [Next-Auth v5](https://authjs.dev)
-- **State Management**: [Redux Toolkit](https://redux-toolkit.js.org)
+- **State Management**: [Redux Toolkit](https://redux-toolkit.js.org) & Context API
 - **Styling**: [Tailwind CSS](https://tailwindcss.com) + [Shadcn UI](https://ui.shadcn.com)
 - **Animations**: [Framer Motion](https://www.framer.com/motion)
-- **Email**: [Brevo (SMTP)](https://www.brevo.com)
-- **Validation**: [Zod](https://zod.dev)
+- **API Client**: Axios with interceptors for token management
+- **Forms**: React Hook Form + Zod validation
 
 ## 🚀 Getting Started
 
 ### Prerequisites
 
 - Node.js 20+
-- MongoDB instance (Atlas or local)
-- Brevo (formerly Sendinblue) account for emails
+- Running instance of [Core Backend](https://github.com/geekyzindagi/core-backend)
 
 ### Installation
 
@@ -50,53 +43,40 @@ GeekyZindagi is a multidisciplinary community platform designed for curious mind
    ```
 
 3. **Environment Setup**:
-   Create a `.env` file in the root directory and configure following variables:
+   Create a `.env` file in the root directory:
    ```env
-   DATABASE_URL="your_mongodb_url"
-   NEXTAUTH_URL="http://localhost:3000"
-   NEXTAUTH_SECRET="your_nextauth_secret"
-   
-   SMTP_HOST="smtp-relay.brevo.com"
-   SMTP_PORT=587
-   SMTP_USER="your_brevo_user"
-   SMTP_PASSWORD="your_brevo_password"
-   FROM_EMAIL="noreply@geekyzindagi.com"
+   # App Config
+   NEXT_PUBLIC_APP_NAME="GeekyZindagi"
+   NEXT_PUBLIC_API_URL="http://localhost:5000/api"
 
-   ENCRYPTION_KEY="your_64_char_hex_key"
+   # GitHub API (Optional, for higher rate limits in projects page)
    GITHUB_TOKEN="optional_github_api_token"
    ```
 
-4. **Database Initialization**:
-   ```bash
-   npx prisma generate
-   npx prisma db push
-   npm run db:seed
-   ```
-
-5. **Run the development server**:
+4. **Run the development server**:
    ```bash
    npm run dev
    ```
+   Open [http://localhost:3000](http://localhost:3000) with your browser.
 
 ## 🏗 CI/CD
 
-The project uses **GitHub Actions** for Continuous Integration. Every push to `main` or `modifications` triggers:
+The project uses **GitHub Actions** for Continuous Integration. Every push to `main` triggers:
 - Dependency installation
-- Prisma client generation
 - Linting checks
 - Production build verification
 
 ## 📁 Repository Structure
 
-- `app/`: Next.js App Router (Pages & API)
-- `components/`: React components (UI, Dashboard, Landing)
-- `lib/`: Business logic, validation, and utility functions
-- `prisma/`: Database schema and seed scripts
-- `store/`: Redux Toolkit store and slices
+- `app/`: Next.js App Router (Pages & Layouts)
+- `components/`: Reusable UI components (Landing, Dashboard, Shared)
+- `lib/`: Utilities, API client, and hook definitions
+- `store/`: Global state management (Redux)
+- `public/`: Static assets
 
 ## 🤝 Contributing
 
-We welcome contributions from all domains! See our project boards in the Admin Dashboard for open ideas and mentorship requests.
+We welcome contributions! Please see our project boards or open an issue to get started.
 
 ---
 © 2026 GeekyZindagi. Stay Curious.

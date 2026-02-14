@@ -1,35 +1,36 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { 
-  Calendar, 
-  Users, 
-  Mail, 
-  ExternalLink, 
-  MessageSquare, 
-  CheckCircle2, 
+import {
+  Calendar,
+  Users,
+  Mail,
+  ExternalLink,
+  MessageSquare,
+  CheckCircle2,
   Clock,
   Trash2,
   ChevronRight,
   Filter
 } from "lucide-react";
-import { 
-  Card, 
-  CardContent, 
-  CardDescription, 
-  CardHeader, 
-  CardTitle 
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
 } from "@/components/ui/card";
-import { 
-  Tabs, 
-  TabsContent, 
-  TabsList, 
-  TabsTrigger 
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger
 } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { format } from "date-fns";
+import { apiClient } from "@/lib/api-client";
 
 type RequestStatus = "PENDING" | "REVIEWED" | "CONTACTED" | "ARCHIVED";
 
@@ -60,9 +61,7 @@ export default function AdminRequestsPage() {
 
   async function fetchRequests() {
     try {
-      const res = await fetch("/api/admin/requests");
-      if (!res.ok) throw new Error("Failed to fetch");
-      const data = await res.json();
+      const { data } = await apiClient.get<{ events: EventRequest[], mentorship: MentorshipRequest[] }>("/requests/admin");
       setEvents(data.events);
       setMentorship(data.mentorship);
     } catch (error) {

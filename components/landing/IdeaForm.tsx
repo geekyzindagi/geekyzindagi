@@ -7,6 +7,9 @@ import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { Loader2, Sparkles, X } from "lucide-react";
 
+import { apiClient } from "@/lib/api-client";
+import { useStats } from "@/context/StatsContext";
+
 import {
   Form,
   FormControl,
@@ -38,6 +41,7 @@ import {
 export function IdeaForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const { triggerRefresh } = useStats();
 
   const form = useForm<IdeaSubmissionInput>({
     resolver: zodResolver(ideaSubmissionSchema),
@@ -70,19 +74,10 @@ export function IdeaForm() {
   async function onSubmit(data: IdeaSubmissionInput) {
     setIsLoading(true);
     try {
-      const res = await fetch("/api/ideas", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-
-      const result = await res.json();
-
-      if (!res.ok) {
-        throw new Error(result.error || "Failed to submit");
-      }
+      await apiClient.post("/ideas", data);
 
       setIsSubmitted(true);
+      triggerRefresh();
       toast.success("🎉 You're now an Explorer!", {
         description: "We'll review your idea and reach out soon.",
       });

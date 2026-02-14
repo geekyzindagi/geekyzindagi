@@ -6,13 +6,12 @@ import { cn } from "@/lib/utils";
 interface LogoProps {
   className?: string;
   href?: string;
-  isDashboard?: boolean;
 }
 
-export function Logo({ className, href = "/", isDashboard = false }: LogoProps) {
+export function Logo({ className, href = "/" }: LogoProps) {
   return (
-    <Link 
-      href={href} 
+    <Link
+      href={href}
       className={cn("flex items-center tracking-tighter group select-none relative", className)}
     >
       <span className="text-xl font-black text-gray-900 lowercase mr-0.5 tracking-[-0.05em]">

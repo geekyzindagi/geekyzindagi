@@ -32,22 +32,22 @@ import {
 } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { 
-  Tabs, 
-  TabsContent, 
-  TabsList, 
-  TabsTrigger 
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger
 } from "@/components/ui/tabs";
-import { apiClient } from "@/lib/axios";
+import { apiClient } from "@/lib/api-client";
 
 interface User {
   id: string;
-  name: string | null;
+  fullName: string | null;
   email: string;
-  image: string | null;
+  avatar: string | null;
   role: string;
   mfaEnabled: boolean;
-  emailVerified: Date | null;
+  isVerified: boolean;
   createdAt: string;
 }
 
@@ -65,7 +65,7 @@ export default function UsersPage() {
   const [invites, setInvites] = useState<Invite[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
-  
+
   // Invite state
   const [showInviteDialog, setShowInviteDialog] = useState(false);
   const [inviteEmail, setInviteEmail] = useState("");
@@ -116,7 +116,7 @@ export default function UsersPage() {
 
   async function sendInvite() {
     if (!inviteEmail) return;
-    
+
     setIsInviting(true);
     try {
       const { data } = await apiClient.post<Invite>("/admin/invites", { email: inviteEmail });
@@ -146,12 +146,12 @@ export default function UsersPage() {
     fetchData(); // Refresh both lists
   }
 
-  const filteredUsers = users.filter(user => 
-    user.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+  const filteredUsers = users.filter(user =>
+    user.fullName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
     user.email.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const filteredInvites = invites.filter(invite => 
+  const filteredInvites = invites.filter(invite =>
     invite.email.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -222,13 +222,13 @@ export default function UsersPage() {
                         <TableCell>
                           <div className="flex items-center gap-3">
                             <Avatar className="h-8 w-8">
-                              <AvatarImage src={user.image || undefined} />
+                              <AvatarImage src={user.avatar || undefined} />
                               <AvatarFallback className="text-xs">
-                                {getInitials(user.name, user.email)}
+                                {getInitials(user.fullName, user.email)}
                               </AvatarFallback>
                             </Avatar>
                             <div>
-                              <div className="font-medium">{user.name || "No name"}</div>
+                              <div className="font-medium">{user.fullName || "No name"}</div>
                               <div className="text-sm text-muted-foreground">{user.email}</div>
                             </div>
                           </div>
@@ -253,7 +253,7 @@ export default function UsersPage() {
                           )}
                         </TableCell>
                         <TableCell>
-                          {user.emailVerified ? (
+                          {user.isVerified ? (
                             <Badge className="bg-blue-100 text-blue-700 hover:bg-blue-200">
                               <Mail className="h-3 w-3 mr-1" />
                               Yes
@@ -352,9 +352,9 @@ export default function UsersPage() {
                           </div>
                         </TableCell>
                         <TableCell className="text-right">
-                          <Button 
-                            variant="ghost" 
-                            size="sm" 
+                          <Button
+                            variant="ghost"
+                            size="sm"
                             onClick={() => {
                               const link = `${window.location.origin}/register?token=${invite.token}`;
                               navigator.clipboard.writeText(link);
@@ -385,7 +385,7 @@ export default function UsersPage() {
               Send an invitation to allow someone to register on the platform.
             </DialogDescription>
           </DialogHeader>
-          
+
           {!inviteLink ? (
             <div className="space-y-4">
               <div>

@@ -1,18 +1,18 @@
 import { NavbarNotion, FooterNotion } from "@/components/landing";
-import { auth } from "@/lib/auth";
+
 import Link from "next/link";
 import { ArrowLeft, Share2, Bookmark } from "lucide-react";
 
 export default async function BlogPost2() {
-  const session = await auth();
+
 
   return (
     <div className="min-h-screen bg-[#FFFCF8]">
-      <NavbarNotion session={session} />
+      <NavbarNotion />
 
       <article className="container mx-auto px-6 pt-32 pb-20">
         <div className="max-w-3xl mx-auto">
-          <Link 
+          <Link
             href="/blog"
             className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-900 mb-8 transition-colors"
           >

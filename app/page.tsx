@@ -1,4 +1,6 @@
-import { auth } from "@/lib/auth";
+"use client";
+
+import { useAuth } from "@/context/AuthContext";
 import {
   HeroNotion,
   StoryNotion,
@@ -9,13 +11,12 @@ import {
   NavbarNotion,
 } from "@/components/landing";
 
-export default async function Home() {
-  const session = await auth();
+export default function Home() {
 
   return (
     <div className="min-h-screen">
       {/* Navbar */}
-      <NavbarNotion session={session} />
+      <NavbarNotion />
 
       {/* Hero */}
       <HeroNotion />

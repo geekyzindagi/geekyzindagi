@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { apiClient } from "@/lib/api-client";
+import { useStats } from "@/context/StatsContext";
 import { motion } from "framer-motion";
 import { Lightbulb, Hammer, Star } from "lucide-react";
 
@@ -43,15 +45,13 @@ const tiers = [
 export function CommunityStats() {
   const [stats, setStats] = useState<Stats>({ explorers: 0, builders: 0, elders: 0 });
   const [isLoading, setIsLoading] = useState(true);
+  const { refreshKey } = useStats();
 
   useEffect(() => {
     async function fetchStats() {
       try {
-        const res = await fetch("/api/stats");
-        if (res.ok) {
-          const data = await res.json();
-          setStats(data);
-        }
+        const { data } = await apiClient.get<Stats>("/stats");
+        setStats(data);
       } catch (error) {
         console.error("Failed to fetch stats:", error);
       } finally {
@@ -60,7 +60,7 @@ export function CommunityStats() {
     }
 
     fetchStats();
-  }, []);
+  }, [refreshKey]);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
