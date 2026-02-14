@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { signOut } from "next-auth/react";
+import { useAuth } from "@/context/AuthContext";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -27,6 +27,7 @@ interface DashboardNavProps {
 }
 
 export function DashboardNav({ user }: DashboardNavProps) {
+  const { logout } = useAuth();
   const pathname = usePathname();
 
   const isAdmin = ["ADMIN", "SUPER_ADMIN"].includes(user.role);
@@ -49,11 +50,10 @@ export function DashboardNav({ user }: DashboardNavProps) {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`text-sm font-medium transition-colors hover:text-primary ${
-                  pathname === item.href
-                    ? "text-foreground"
-                    : "text-muted-foreground"
-                }`}
+                className={`text-sm font-medium transition-colors hover:text-primary ${pathname === item.href
+                  ? "text-foreground"
+                  : "text-muted-foreground"
+                  }`}
               >
                 {item.label}
               </Link>
@@ -127,7 +127,7 @@ export function DashboardNav({ user }: DashboardNavProps) {
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 className="cursor-pointer text-red-600 focus:text-red-600"
-                onClick={() => signOut({ callbackUrl: "/login" })}
+                onClick={logout}
               >
                 <LogOut className="mr-2 h-4 w-4" />
                 Sign Out

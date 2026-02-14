@@ -2,13 +2,15 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Session } from "next-auth";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Logo } from "@/components/ui/logo";
 
 interface NavbarNotionProps {
-  session: Session | null;
+  user?: {
+    name?: string | null;
+    email?: string | null;
+  } | null;
 }
 
 const navLinks = [
@@ -20,7 +22,7 @@ const navLinks = [
   { name: "Blog", href: "/blog" },
 ];
 
-export function NavbarNotion({ session }: NavbarNotionProps) {
+export function NavbarNotion({ user }: NavbarNotionProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -46,7 +48,7 @@ export function NavbarNotion({ session }: NavbarNotionProps) {
 
             {/* Auth */}
             <div className="hidden md:flex items-center gap-3">
-              {session ? (
+              {user ? (
                 <Link
                   href="/dashboard"
                   className="px-4 py-2 rounded-lg bg-gray-900 text-white text-sm font-medium hover:bg-gray-800 transition-colors"
@@ -111,7 +113,7 @@ export function NavbarNotion({ session }: NavbarNotionProps) {
                 onClick={() => setIsOpen(false)}
                 className="px-4 py-3 text-center rounded-xl bg-gray-900 text-white font-medium"
               >
-                Get Started
+                {user ? "Dashboard" : "Get Started"}
               </Link>
             </div>
           </div>

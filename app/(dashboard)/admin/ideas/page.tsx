@@ -1,13 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { 
-  Lightbulb, 
-  Calendar, 
-  User, 
-  Mail, 
-  Code, 
-  Target, 
+import {
+  Lightbulb,
+  Calendar,
+  User,
+  Mail,
+  Code,
+  Target,
   Search,
   CheckCircle2,
   Clock,
@@ -42,7 +42,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { apiClient } from "@/lib/axios";
+import { apiClient } from "@/lib/api-client";
 
 interface Idea {
   id: string;
@@ -70,7 +70,7 @@ export default function AdminIdeasPage() {
 
   async function fetchIdeas() {
     try {
-      const { data } = await apiClient.get<Idea[]>("/ideas");
+      const { data } = await apiClient.get<Idea[]>("/ideas/admin");
       // Sort by newest first
       setIdeas(data.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()));
     } catch (error) {
@@ -275,10 +275,10 @@ export default function AdminIdeasPage() {
                     </h4>
                     <p className="text-sm text-muted-foreground bg-muted/30 p-3 rounded-lg border">
                       {selectedIdea.lookingFor === 'feedback' ? 'Feedback & Validation' :
-                       selectedIdea.lookingFor === 'collaborators' ? 'Co-founders / Team' :
-                       selectedIdea.lookingFor === 'mentorship' ? 'Mentorship' :
-                       selectedIdea.lookingFor === 'resources' ? 'Learning Resources' :
-                       selectedIdea.lookingFor === 'accountability' ? 'Accountability' : 'Just Sharing'}
+                        selectedIdea.lookingFor === 'collaborators' ? 'Co-founders / Team' :
+                          selectedIdea.lookingFor === 'mentorship' ? 'Mentorship' :
+                            selectedIdea.lookingFor === 'resources' ? 'Learning Resources' :
+                              selectedIdea.lookingFor === 'accountability' ? 'Accountability' : 'Just Sharing'}
                     </p>
                   </div>
                 </div>
@@ -287,12 +287,12 @@ export default function AdminIdeasPage() {
               <div className="flex justify-between mt-6">
                 <Button variant="outline" onClick={() => setSelectedIdea(null)}>Close</Button>
                 <div className="space-x-2">
-                   <Button 
-                    disabled={isInviting || selectedIdea.status === 'CONTACTED'} 
+                  <Button
+                    disabled={isInviting || selectedIdea.status === 'CONTACTED'}
                     onClick={() => handleInvite(selectedIdea.id)}
-                   >
-                     {isInviting ? "Inviting..." : selectedIdea.status === 'CONTACTED' ? "Already Invited" : "Invite as Builder"}
-                   </Button>
+                  >
+                    {isInviting ? "Inviting..." : selectedIdea.status === 'CONTACTED' ? "Already Invited" : "Invite as Builder"}
+                  </Button>
                 </div>
               </div>
             </>

@@ -2,7 +2,7 @@
 
 import { useState, useEffect, use } from "react";
 import { useRouter } from "next/navigation";
-import { signIn } from "next-auth/react";
+import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -29,7 +29,7 @@ import {
 } from "@/components/ui/form";
 import { Separator } from "@/components/ui/separator";
 import { acceptInviteSchema, type AcceptInviteInput } from "@/lib/validations/auth";
-import { apiClient } from "@/lib/axios";
+import { apiClient } from "@/lib/api-client";
 
 interface InviteData {
   valid: boolean;
@@ -47,6 +47,7 @@ export default function InvitePage({
 }) {
   const { token } = use(params);
   const router = useRouter();
+  const { login } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [isValidating, setIsValidating] = useState(true);
   const [inviteData, setInviteData] = useState<InviteData | null>(null);
@@ -83,21 +84,12 @@ export default function InvitePage({
       await apiClient.post("/auth/register", data);
       toast.success("Account created successfully!");
 
-      // Auto sign in
-      const result = await signIn("credentials", {
-        email: inviteData?.email,
-        password: data.password,
-        redirect: false,
-      });
-
-      if (result?.ok) {
-        router.push("/dashboard");
-      } else {
-        router.push("/login");
-      }
-    } catch (error: unknown) {
-      const err = error as { response?: { data?: { error?: string } } };
-      toast.error(err.response?.data?.error || "Failed to create account");
+      // Auto sign in using custom login
+      await login(inviteData!.email, data.password);
+      router.push("/dashboard");
+    } catch (error: any) {
+      const message = error.response?.data?.message || "Failed to create account";
+      toast.error(message);
     } finally {
       setIsLoading(false);
     }
@@ -108,7 +100,9 @@ export default function InvitePage({
     try {
       // Store token in session storage for OAuth callback
       sessionStorage.setItem("inviteToken", token);
-      await signIn(provider, { callbackUrl: "/dashboard" });
+      toast.info("OAuth is currently being refactored for the new auth system.");
+      // In the future, this would redirect to backend:
+      // window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/${provider}?inviteToken=${token}`;
     } catch {
       toast.error("Something went wrong");
     } finally {

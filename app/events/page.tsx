@@ -7,14 +7,15 @@ import { Calendar, MapPin, Video, Send, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { 
-  Select, 
-  SelectContent, 
-  SelectItem, 
-  SelectTrigger, 
-  SelectValue 
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
 } from "@/components/ui/select";
 import { toast } from "sonner";
+import { apiClient } from "@/lib/api-client";
 
 export default function EventsPage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -23,7 +24,7 @@ export default function EventsPage() {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setIsLoading(true);
-    
+
     const formData = new FormData(e.currentTarget);
     const data = {
       type: formData.get("type"),
@@ -33,14 +34,8 @@ export default function EventsPage() {
     };
 
     try {
-      const res = await fetch("/api/requests/event", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
+      await apiClient.post("/requests/event", data);
 
-      if (!res.ok) throw new Error("Failed to submit");
-      
       setIsSubmitted(true);
       toast.success("Event request submitted successfully!");
     } catch (error) {
@@ -52,7 +47,7 @@ export default function EventsPage() {
 
   return (
     <div className="min-h-screen bg-[#FFFCF8]">
-      <NavbarNotion session={null} />
+      <NavbarNotion user={null} />
 
       <main className="container mx-auto px-6 pt-32 pb-20">
         <div className="max-w-4xl mx-auto">
@@ -66,7 +61,7 @@ export default function EventsPage() {
           </div>
 
           {!isSubmitted ? (
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               className="bg-white border border-gray-200 rounded-3xl p-8 shadow-sm"
@@ -104,17 +99,17 @@ export default function EventsPage() {
 
                 <div className="space-y-2">
                   <label className="text-sm font-semibold text-gray-700">Agenda Details / Ideas to Review</label>
-                  <Textarea 
+                  <Textarea
                     name="details"
-                    placeholder="Tell us what you'd like to see, talk about, or learn..." 
-                    className="min-h-[120px]" 
-                    required 
+                    placeholder="Tell us what you'd like to see, talk about, or learn..."
+                    className="min-h-[120px]"
+                    required
                   />
                 </div>
 
-                <Button 
-                  type="submit" 
-                  className="w-full md:w-auto px-8" 
+                <Button
+                  type="submit"
+                  className="w-full md:w-auto px-8"
                   disabled={isLoading}
                 >
                   {isLoading ? "Submitting..." : "Submit Event Request"}
@@ -122,7 +117,7 @@ export default function EventsPage() {
               </form>
             </motion.div>
           ) : (
-            <motion.div 
+            <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               className="bg-white border border-green-100 rounded-3xl p-12 text-center shadow-sm"

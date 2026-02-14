@@ -2,13 +2,13 @@
 
 import { NavbarNotion, FooterNotion } from "@/components/landing";
 import { motion, AnimatePresence } from "framer-motion";
-import { 
-  Users, 
-  Code2, 
-  Palette, 
-  Server, 
-  Video, 
-  MessageSquare, 
+import {
+  Users,
+  Code2,
+  Palette,
+  Server,
+  Video,
+  MessageSquare,
   ArrowRight,
   Sparkles,
   Send,
@@ -17,16 +17,17 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { 
-  Select, 
-  SelectContent, 
-  SelectItem, 
-  SelectTrigger, 
-  SelectValue 
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import { useState } from "react";
 import Link from "next/link";
+import { apiClient } from "@/lib/api-client";
 
 const opportunities = [
   {
@@ -59,7 +60,7 @@ export default function MentorshipPage() {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setIsLoading(true);
-    
+
     const formData = new FormData(e.currentTarget);
     const data = {
       name: formData.get("name"),
@@ -70,14 +71,8 @@ export default function MentorshipPage() {
     };
 
     try {
-      const res = await fetch("/api/requests/mentorship", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
+      await apiClient.post("/requests/mentorship", data);
 
-      if (!res.ok) throw new Error("Failed to submit");
-      
       setIsSubmitted(true);
       toast.success("Application submitted successfully!");
     } catch (error) {
@@ -89,7 +84,7 @@ export default function MentorshipPage() {
 
   return (
     <div className="min-h-screen bg-[#FFFCF8]">
-      <NavbarNotion session={null} />
+      <NavbarNotion user={null} />
 
       <main className="container mx-auto px-6 pt-32 pb-20">
         <div className="max-w-4xl mx-auto">
@@ -133,7 +128,7 @@ export default function MentorshipPage() {
           {/* Form Section */}
           <div className="max-w-3xl mx-auto mb-20">
             {!isSubmitted ? (
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 className="bg-white border border-gray-200 rounded-3xl p-8 md:p-12 shadow-sm"
@@ -179,17 +174,17 @@ export default function MentorshipPage() {
 
                   <div className="space-y-2">
                     <label className="text-sm font-semibold text-gray-700">Why do you want to join us?</label>
-                    <Textarea 
+                    <Textarea
                       name="message"
-                      placeholder="Tell us about your background and what you'd like to build together..." 
-                      className="min-h-[150px]" 
-                      required 
+                      placeholder="Tell us about your background and what you'd like to build together..."
+                      className="min-h-[150px]"
+                      required
                     />
                   </div>
 
-                  <Button 
-                    type="submit" 
-                    className="w-full h-12 bg-gray-900 text-white hover:bg-black rounded-xl text-lg font-semibold transition-all group" 
+                  <Button
+                    type="submit"
+                    className="w-full h-12 bg-gray-900 text-white hover:bg-black rounded-xl text-lg font-semibold transition-all group"
                     disabled={isLoading}
                   >
                     {isLoading ? (
@@ -206,7 +201,7 @@ export default function MentorshipPage() {
                 </form>
               </motion.div>
             ) : (
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 className="bg-green-50 border border-green-200 rounded-3xl p-12 text-center"

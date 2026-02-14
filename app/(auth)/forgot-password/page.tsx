@@ -26,7 +26,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { forgotPasswordSchema, type ForgotPasswordInput } from "@/lib/validations/auth";
-import { apiClient } from "@/lib/axios";
+import { apiClient } from "@/lib/api-client";
 
 export default function ForgotPasswordPage() {
   const [isLoading, setIsLoading] = useState(false);

@@ -28,7 +28,7 @@ import {
   changePasswordSchema,
   type ChangePasswordInput,
 } from "@/lib/validations/auth";
-import { apiClient } from "@/lib/axios";
+import { apiClient } from "@/lib/api-client";
 
 export default function PasswordSettingsPage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -189,7 +189,7 @@ export default function PasswordSettingsPage() {
                   </FormItem>
                 )}
               />
-              
+
               <Alert>
                 <ShieldCheck className="h-4 w-4" />
                 <AlertDescription>

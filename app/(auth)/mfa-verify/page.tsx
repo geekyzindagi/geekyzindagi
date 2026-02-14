@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
-import { signOut } from "next-auth/react";
+import { useAuth } from "@/context/AuthContext";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
@@ -29,11 +28,10 @@ import {
 } from "@/components/ui/form";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { mfaVerifySchema, type MfaVerifyInput } from "@/lib/validations/auth";
-import { apiClient } from "@/lib/axios";
 
 export default function MfaVerifyPage() {
   const router = useRouter();
-  const { update } = useSession();
+  const { verifyMfa, logout } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<MfaVerifyInput>({
@@ -46,18 +44,11 @@ export default function MfaVerifyPage() {
   async function onSubmit(data: MfaVerifyInput) {
     setIsLoading(true);
     try {
-      const response = await apiClient.post<{ verified: boolean }>("/auth/mfa/verify", data);
-
-      if (response.data.verified) {
-        // Update session to mark MFA as verified
-        await update({ mfaVerified: true });
-        toast.success("Verified successfully");
-        router.push("/dashboard");
-        router.refresh();
-      }
-    } catch (error: unknown) {
-      const err = error as { response?: { data?: { error?: string } } };
-      toast.error(err.response?.data?.error || "Invalid code");
+      await verifyMfa(data.code);
+      toast.success("Verified successfully");
+    } catch (error: any) {
+      const message = error.response?.data?.message || "Invalid code";
+      toast.error(message);
       form.setValue("code", "");
     } finally {
       setIsLoading(false);
@@ -163,7 +154,7 @@ export default function MfaVerifyPage() {
         <Button
           variant="ghost"
           className="w-full"
-          onClick={() => signOut({ callbackUrl: "/login" })}
+          onClick={logout}
         >
           Sign out and try again
         </Button>

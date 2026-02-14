@@ -13,7 +13,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { apiClient } from "@/lib/axios";
+import { apiClient } from "@/lib/api-client";
 
 interface Account {
   id: string;

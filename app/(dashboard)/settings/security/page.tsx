@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useSession } from "next-auth/react";
+import { useAuth } from "@/context/AuthContext";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
@@ -39,10 +39,10 @@ import {
   type ChangePasswordInput,
   type MfaSetupInput,
 } from "@/lib/validations/auth";
-import { apiClient } from "@/lib/axios";
+import { apiClient } from "@/lib/api-client";
 
 export default function SecuritySettingsPage() {
-  const { data: session, update } = useSession();
+  const { user, updateUser } = useAuth();
   const [isPasswordLoading, setIsPasswordLoading] = useState(false);
   const [isMfaLoading, setIsMfaLoading] = useState(false);
 
@@ -108,7 +108,7 @@ export default function SecuritySettingsPage() {
     try {
       const response = await apiClient.post<{ backupCodes: string[] }>("/auth/mfa/verify-setup", data);
       setBackupCodes(response.data.backupCodes);
-      await update({ mfaEnabled: true });
+      updateUser({ mfaEnabled: true });
       mfaForm.reset();
       toast.success("MFA enabled successfully!");
     } catch (error: unknown) {
@@ -123,7 +123,7 @@ export default function SecuritySettingsPage() {
     setIsMfaLoading(true);
     try {
       await apiClient.post("/auth/mfa/disable", { password: disablePassword });
-      await update({ mfaEnabled: false });
+      updateUser({ mfaEnabled: false });
       setShowDisableMfa(false);
       setDisablePassword("");
       toast.success("MFA disabled successfully");
@@ -302,7 +302,7 @@ export default function SecuritySettingsPage() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             Two-Factor Authentication
-            {session?.user?.mfaEnabled ? (
+            {user?.mfaEnabled ? (
               <ShieldCheck className="h-5 w-5 text-green-500" />
             ) : (
               <ShieldOff className="h-5 w-5 text-yellow-500" />
@@ -314,7 +314,7 @@ export default function SecuritySettingsPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          {session?.user?.mfaEnabled ? (
+          {user?.mfaEnabled ? (
             <div className="space-y-4">
               <Alert>
                 <ShieldCheck className="h-4 w-4" />

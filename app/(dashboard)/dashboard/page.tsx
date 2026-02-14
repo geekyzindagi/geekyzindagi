@@ -1,19 +1,44 @@
-import { auth } from "@/lib/auth";
+"use client";
+
+import { useAuth } from "@/context/AuthContext";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ShieldCheck, ShieldOff, User, Settings, Link2, Users, ArrowRight } from "lucide-react";
+import { ShieldCheck, ShieldOff, User, Settings, Link2, Users, ArrowRight, Loader2 } from "lucide-react";
 import Link from "next/link";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
-export default async function DashboardPage() {
-  const session = await auth();
-  const isAdmin = ["ADMIN", "SUPER_ADMIN"].includes(session?.user?.role || "");
+export default function DashboardPage() {
+  const { user, isLoading, isAuthenticated } = useAuth();
+  const router = useRouter();
+
+  console.log('Dashboard Render:', { user, isLoading, isAuthenticated });
+
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated) {
+      console.log('Redirecting to login...');
+      router.push("/login");
+    }
+  }, [isLoading, isAuthenticated, router]);
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[50vh]">
+        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
+
+  if (!user) return null;
+
+  const isAdmin = ["ADMIN", "SUPER_ADMIN"].includes(user.role || "");
 
   return (
     <div className="space-y-8">
       {/* Welcome Section */}
       <div className="flex flex-col gap-2">
         <h1 className="text-3xl font-bold tracking-tight">
-          Welcome back, {session?.user?.name?.split(" ")[0] || "User"}! 👋
+          Welcome back, {(user.fullName || user.username || "User").split(" ")[0]}! 👋
         </h1>
         <p className="text-muted-foreground">
           Here&apos;s what&apos;s happening with your account today.
@@ -25,11 +50,11 @@ export default async function DashboardPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Account Status</CardTitle>
-            <Badge variant="default" className="bg-green-500">{session?.user?.status}</Badge>
+            <Badge variant="default" className="bg-green-500">{user.status}</Badge>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold capitalize">
-              {session?.user?.role?.toLowerCase().replace("_", " ")}
+              {user.role?.toLowerCase().replace("_", " ")}
             </div>
             <p className="text-xs text-muted-foreground mt-1">
               Your account role
@@ -40,7 +65,7 @@ export default async function DashboardPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Two-Factor Auth</CardTitle>
-            {session?.user?.mfaEnabled ? (
+            {user.mfaEnabled ? (
               <ShieldCheck className="h-5 w-5 text-green-500" />
             ) : (
               <ShieldOff className="h-5 w-5 text-orange-500" />
@@ -48,10 +73,10 @@ export default async function DashboardPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {session?.user?.mfaEnabled ? "Enabled" : "Disabled"}
+              {user.mfaEnabled ? "Enabled" : "Disabled"}
             </div>
             <p className="text-xs text-muted-foreground mt-1">
-              {session?.user?.mfaEnabled
+              {user.mfaEnabled
                 ? "Your account is protected"
                 : "Enable for extra security"}
             </p>
@@ -64,7 +89,7 @@ export default async function DashboardPage() {
           </CardHeader>
           <CardContent>
             <div className="text-lg font-medium truncate">
-              {session?.user?.email}
+              {user.email}
             </div>
             <p className="text-xs text-muted-foreground mt-1">
               Verified email address
