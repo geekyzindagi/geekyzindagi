@@ -2,11 +2,13 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Session } from "next-auth";
+// import { Session } from "next-auth";
+import { useState, useEffect } from "react";
+import { Menu, X } from "lucide-react";
 import { Logo } from "@/components/ui/logo";
 
 interface NavbarMinimalProps {
-  session: Session | null;
+  session: any | null;
 }
 
 export function NavbarMinimal({ session }: NavbarMinimalProps) {

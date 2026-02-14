@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { signIn } from "next-auth/react";
+// import { signIn } from "next-auth/react";
 import { toast } from "sonner";
 import { Loader2, Link2, Unlink } from "lucide-react";
 
@@ -71,7 +71,8 @@ export default function ConnectedAccountsPage() {
   async function connectAccount(provider: string) {
     setActionLoading(provider);
     try {
-      await signIn(provider, { callbackUrl: "/settings/accounts" });
+      // await signIn(provider, { callbackUrl: "/settings/accounts" });
+      toast.error("Social account linking is coming soon!");
     } catch {
       toast.error("Failed to connect account");
     } finally {
