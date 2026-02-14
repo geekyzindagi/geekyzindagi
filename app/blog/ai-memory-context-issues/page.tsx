@@ -1,18 +1,18 @@
 import { NavbarNotion, FooterNotion } from "@/components/landing";
-import { auth } from "@/lib/auth";
+
 import Link from "next/link";
 import { ArrowLeft, Share2, Bookmark } from "lucide-react";
 
 export default async function BlogPost1() {
-  const session = await auth();
+
 
   return (
     <div className="min-h-screen bg-[#FFFCF8]">
-      <NavbarNotion session={session} />
+      <NavbarNotion />
 
       <article className="container mx-auto px-6 pt-32 pb-20">
         <div className="max-w-3xl mx-auto">
-          <Link 
+          <Link
             href="/blog"
             className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-900 mb-8 transition-colors"
           >
@@ -65,7 +65,7 @@ export default async function BlogPost1() {
             </ul>
 
             <h2 className="text-2xl font-bold mt-12 mb-4 text-gray-900">Core Strategies for Memory Management</h2>
-            
+
             <h3 className="text-xl font-semibold mt-8 mb-3 text-gray-800 italic">1. Semantic Retrieval (RAG)</h3>
             <p className="mb-6 text-gray-700 leading-relaxed">
               Don't shove your entire knowledge base into the prompt. Use Vector Databases (like Pinecone or Chroma) to retrieve only the most relevant chunks of data. Only the "Top K" relevant documents enter the context.

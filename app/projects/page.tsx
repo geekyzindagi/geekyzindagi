@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { NavbarNotion, FooterNotion } from "@/components/landing";
-import { auth } from "@/lib/auth";
+
 import { Github, ExternalLink, Star, GitFork, Code2 } from "lucide-react";
 import { getGitHubStats } from "@/lib/github";
 
@@ -17,7 +17,7 @@ const projects = [
 ];
 
 export default async function ProjectsPage() {
-  const session = await auth();
+
 
   // Fetch real-time GitHub stats for all projects
   const projectsWithStats = await Promise.all(
@@ -33,7 +33,7 @@ export default async function ProjectsPage() {
 
   return (
     <div className="min-h-screen bg-[#FFFCF8]">
-      <NavbarNotion session={session} />
+      <NavbarNotion />
 
       <main className="container mx-auto px-6 pt-24 pb-20">
         <div className="max-w-3xl mx-auto mb-16 text-center">
@@ -47,7 +47,7 @@ export default async function ProjectsPage() {
 
         <div className="max-w-xl mx-auto">
           {projectsWithStats.map((project) => (
-            <div 
+            <div
               key={project.title}
               className="group flex flex-col justify-between bg-white border border-gray-200 rounded-2xl p-8 hover:shadow-2xl hover:border-blue-200 transition-all duration-300 relative overflow-hidden"
             >
@@ -57,15 +57,14 @@ export default async function ProjectsPage() {
 
               <div>
                 <div className="flex justify-between items-start mb-4">
-                  <span className={`px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded border ${
-                    project.status === 'Active' ? 'bg-green-50 text-green-700 border-green-200' :
-                    project.status === 'Beta' ? 'bg-amber-50 text-amber-700 border-amber-200' :
-                    'bg-blue-50 text-blue-700 border-blue-200'
-                  }`}>
+                  <span className={`px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded border ${project.status === 'Active' ? 'bg-green-50 text-green-700 border-green-200' :
+                      project.status === 'Beta' ? 'bg-amber-50 text-amber-700 border-amber-200' :
+                        'bg-blue-50 text-blue-700 border-blue-200'
+                    }`}>
                     {project.status}
                   </span>
                 </div>
-                
+
                 <h2 className="text-xl font-bold text-gray-900 mb-2">
                   {project.title}
                 </h2>
@@ -93,9 +92,9 @@ export default async function ProjectsPage() {
                     {project.forks}
                   </span>
                 </div>
-                
+
                 <div className="flex items-center gap-3">
-                  <a 
+                  <a
                     href={project.github}
                     target="_blank"
                     rel="noopener noreferrer"

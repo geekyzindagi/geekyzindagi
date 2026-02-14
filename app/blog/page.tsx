@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { NavbarNotion, FooterNotion } from "@/components/landing";
-import { auth } from "@/lib/auth";
+
 import { Calendar, Clock, ArrowRight } from "lucide-react";
 
 const blogPosts = [
@@ -23,11 +23,11 @@ const blogPosts = [
 ];
 
 export default async function BlogPage() {
-  const session = await auth();
+
 
   return (
     <div className="min-h-screen bg-[#FFFCF8]">
-      <NavbarNotion session={session} />
+      <NavbarNotion />
 
       <main className="container mx-auto px-6 pt-24 pb-20">
         <div className="max-w-3xl mx-auto mb-12 text-center">
@@ -41,8 +41,8 @@ export default async function BlogPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto">
           {blogPosts.map((post) => (
-            <Link 
-              key={post.slug} 
+            <Link
+              key={post.slug}
               href={`/blog/${post.slug}`}
               className="group flex flex-col justify-between bg-white border border-gray-200 rounded-2xl p-6 hover:shadow-xl hover:border-gray-300 transition-all duration-300"
             >
@@ -54,7 +54,7 @@ export default async function BlogPage() {
                     </span>
                   ))}
                 </div>
-                
+
                 <h2 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors line-clamp-2">
                   {post.title}
                 </h2>

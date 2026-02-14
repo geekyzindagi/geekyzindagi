@@ -6,12 +6,9 @@ import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Logo } from "@/components/ui/logo";
 
-interface NavbarNotionProps {
-  user?: {
-    name?: string | null;
-    email?: string | null;
-  } | null;
-}
+import { useAuth } from "@/context/AuthContext";
+
+interface NavbarNotionProps { }
 
 const navLinks = [
   { name: "Journey", href: "/#story" },
@@ -22,7 +19,8 @@ const navLinks = [
   { name: "Blog", href: "/blog" },
 ];
 
-export function NavbarNotion({ user }: NavbarNotionProps) {
+export function NavbarNotion({ }: NavbarNotionProps) {
+  const { user } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
 
   return (
