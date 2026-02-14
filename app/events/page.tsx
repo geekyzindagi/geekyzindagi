@@ -47,7 +47,7 @@ export default function EventsPage() {
 
   return (
     <div className="min-h-screen bg-[#FFFCF8]">
-      <NavbarNotion user={null} />
+      <NavbarNotion />
 
       <main className="container mx-auto px-6 pt-32 pb-20">
         <div className="max-w-4xl mx-auto">

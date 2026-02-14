@@ -12,12 +12,11 @@ import {
 } from "@/components/landing";
 
 export default function Home() {
-  const { user } = useAuth();
 
   return (
     <div className="min-h-screen">
       {/* Navbar */}
-      <NavbarNotion user={user ? { name: user.fullName || user.username, email: user.email } : null} />
+      <NavbarNotion />
 
       {/* Hero */}
       <HeroNotion />
