@@ -6,8 +6,9 @@ import apiClient from '@/lib/api-client';
 import { User, AuthState } from '@/types/auth';
 
 interface AuthContextType extends AuthState {
-    login: (email: string, password: string, mfaToken?: string) => Promise<any>;
+    login: (email: string, password: string, mfaToken?: string) => Promise<unknown>;
     logout: () => void;
+
     updateUser: (user: Partial<User>) => void;
     verifyMfa: (token: string) => Promise<void>;
 }
@@ -53,21 +54,34 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     // Temporary storage for login credentials during MFA flow
     const [tempLoginData, setTempLoginData] = useState<{ email: string, password: string } | null>(null);
 
+    interface LoginResponse {
+        mfaRequired?: boolean;
+        userId?: string;
+        user?: User;
+        access_token?: string;
+    }
+
     const login = async (email: string, password: string, mfaToken?: string) => {
         try {
-            const response = await apiClient.post<any>('/auth/login', { email, password, mfaToken });
+            const response = await apiClient.post<unknown>('/auth/login', { email, password, mfaToken });
+            const data = response.data as LoginResponse;
 
-            if (response.data.mfaRequired) {
+            if (data.mfaRequired) {
                 setTempLoginData({ email, password });
                 setState((prev) => ({
                     ...prev,
                     mfaRequired: true,
-                    tempUserId: response.data.userId,
+                    tempUserId: data.userId,
                 }));
-                return response.data;
+                return data;
             }
 
-            const { user, access_token } = response.data;
+            const { user, access_token } = data;
+
+            if (!user || !access_token) {
+                throw new Error("Invalid response: missing user or token");
+            }
+
             localStorage.setItem('access_token', access_token);
             // Set cookie for middleware (expires in 30 days)
             document.cookie = `access_token=${access_token}; path=/; max-age=${30 * 24 * 60 * 60}; SameSite=Lax`;

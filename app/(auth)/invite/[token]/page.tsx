@@ -87,8 +87,9 @@ export default function InvitePage({
       // Auto sign in using custom login
       await login(inviteData!.email, data.password);
       router.push("/dashboard");
-    } catch (error: any) {
-      const message = error.response?.data?.message || "Failed to create account";
+    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const message = (error as any).response?.data?.message || "Failed to create account";
       toast.error(message);
     } finally {
       setIsLoading(false);

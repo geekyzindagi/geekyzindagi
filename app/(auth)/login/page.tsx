@@ -50,7 +50,7 @@ function LoginForm() {
   async function onSubmit(data: LoginInput) {
     setIsLoading(true);
     try {
-      const result = await login(data.email, data.password);
+      const result = await login(data.email, data.password) as { mfaRequired?: boolean; userId?: string };
 
       if (result?.mfaRequired) {
         toast.info("MFA verification required");
@@ -60,8 +60,9 @@ function LoginForm() {
 
       toast.success("Signed in successfully");
       router.push(callbackUrl);
-    } catch (error: any) {
-      const message = error.response?.data?.message || "Invalid email or password";
+    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const message = (error as any).response?.data?.message || "Invalid email or password";
       toast.error(message);
     } finally {
       setIsLoading(false);

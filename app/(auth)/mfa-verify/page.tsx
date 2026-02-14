@@ -46,8 +46,9 @@ export default function MfaVerifyPage() {
     try {
       await verifyMfa(data.code);
       toast.success("Verified successfully");
-    } catch (error: any) {
-      const message = error.response?.data?.message || "Invalid code";
+    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const message = (error as any).response?.data?.message || "Invalid code";
       toast.error(message);
       form.setValue("code", "");
     } finally {

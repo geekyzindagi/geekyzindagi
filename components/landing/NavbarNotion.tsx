@@ -8,8 +8,6 @@ import { Logo } from "@/components/ui/logo";
 
 import { useAuth } from "@/context/AuthContext";
 
-interface NavbarNotionProps { }
-
 const navLinks = [
   { name: "Journey", href: "/#story" },
   { name: "Explore", href: "/#domains" },
@@ -19,7 +17,7 @@ const navLinks = [
   { name: "Blog", href: "/blog" },
 ];
 
-export function NavbarNotion({ }: NavbarNotionProps) {
+export function NavbarNotion() {
   const { user } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
 
