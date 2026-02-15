@@ -11,6 +11,7 @@ import {
   Settings,
   Lightbulb,
   Bell,
+  BarChart3,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
@@ -47,6 +48,11 @@ export function Sidebar({ isAdmin }: SidebarProps) {
       href: "/admin/requests",
       label: "Requests",
       icon: Bell,
+    },
+    {
+      href: "/admin/analytics",
+      label: "Analytics",
+      icon: BarChart3,
     },
   ];
 
