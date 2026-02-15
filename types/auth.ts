@@ -10,7 +10,7 @@ export interface User {
     role: Role;
     status: UserStatus;
     mfaEnabled: boolean;
-    mfaVerified: boolean;
+    mfaVerified?: boolean;
 }
 
 export interface AuthState {
