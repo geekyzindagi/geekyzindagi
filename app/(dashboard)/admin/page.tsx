@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Users, UserPlus, ChevronRight, Lightbulb } from "lucide-react";
+import { Users, UserPlus, ChevronRight, Lightbulb, BarChart3 } from "lucide-react";
 import {
   Card,
   CardDescription,
@@ -27,6 +27,12 @@ const userOptions = [
     title: "Idea Submissions",
     description: "Review ideas submitted by potential Explorers",
     icon: Lightbulb,
+  },
+  {
+    href: "/admin/analytics",
+    title: "Analytics",
+    description: "Track website traffic, heatmaps, and user behavior",
+    icon: BarChart3,
   },
 ];
 
