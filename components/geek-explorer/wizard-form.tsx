@@ -2,6 +2,8 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Link from 'next/link';
+
 import { Laptop, Palette, Tent, Dice5, Film, Users, Check, ArrowRight, Sparkles, Mail, Share2, Download, Atom, Activity, Coffee, Rocket } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -384,6 +386,7 @@ export default function WizardForm() {
                             )}
 
                             {/* STEP 2: GEEK CARD */}
+
                             {currentStep === 2 && (
                                 <motion.div
                                     key="result"
@@ -392,48 +395,68 @@ export default function WizardForm() {
                                     transition={{ type: "spring", stiffness: 100, damping: 15 }}
                                     className="flex-1 flex flex-col items-center justify-center py-10"
                                 >
-                                    <div ref={cardRef} className="w-full bg-white border-2 border-gray-900 p-10 rounded-3xl relative overflow-hidden max-w-sm shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)] group">
-                                        <div className={cn("absolute top-0 right-0 w-80 h-80 bg-gradient-to-br opacity-10 blur-3xl rounded-full translate-x-1/2 -translate-y-1/2", archetype.bg.replace("bg-", "from-"))} />
+                                    <div ref={cardRef} className="w-full bg-white/80 backdrop-blur-2xl border-2 border-white/50 p-10 rounded-[2.5rem] relative overflow-hidden max-w-sm shadow-[0_30px_100px_rgba(0,0,0,0.15)] group">
+                                        {/* Shimmer Effect Layer */}
+                                        <motion.div
+                                            animate={{ x: ['100%', '-100%'] }}
+                                            transition={{ repeat: Infinity, duration: 3, ease: 'linear' }}
+                                            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent skew-x-12 pointer-events-none"
+                                        />
+
+                                        <div className={cn("absolute top-0 right-0 w-80 h-80 bg-gradient-to-br opacity-20 blur-3xl rounded-full translate-x-1/2 -translate-y-1/2", archetype.bg.replace("bg-", "from-"))} />
 
                                         <div className="relative z-10 text-center space-y-8">
-                                            <div className="space-y-2">
+                                            {/* Badge Section */}
+                                            <div className="flex justify-center mb-[-1rem]">
+                                                <motion.div
+                                                    initial={{ y: 20, opacity: 0 }}
+                                                    animate={{ y: 0, opacity: 1 }}
+                                                    transition={{ delay: 0.5 }}
+                                                    className="inline-flex items-center gap-1.5 px-3 py-1 bg-gray-950 text-white rounded-full text-[9px] font-black uppercase tracking-[0.2em] shadow-xl"
+                                                >
+                                                    <Sparkles size={10} className="text-yellow-400" />
+                                                    Identity Verified
+                                                </motion.div>
+                                            </div>
+
+                                            <div className="space-y-2 pt-4">
                                                 <p className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">Validated Archetype</p>
-                                                <h2 className={cn("text-4xl md:text-5xl font-black uppercase italic tracking-tighter leading-none", archetype.color)}>
+                                                <h2 className={cn("text-4xl md:text-5xl font-black uppercase italic tracking-tighter leading-none break-words", archetype.color)}>
                                                     {archetype.title}
                                                 </h2>
                                             </div>
 
                                             <div className="flex flex-wrap justify-center gap-1.5">
                                                 {formData.interests.map(tag => (
-                                                    <span key={tag} className="text-[10px] font-bold px-2 py-1 rounded-lg bg-gray-50 border border-gray-100 text-gray-500 uppercase">
+                                                    <span key={tag} className="text-[10px] font-bold px-2 py-1 rounded-lg bg-white/50 border border-white/40 text-gray-600 uppercase shadow-sm">
                                                         {tag}
                                                     </span>
                                                 ))}
                                             </div>
 
-                                            <div className="pt-8 border-t border-gray-100 flex justify-between items-end">
+                                            <div className="pt-8 border-t border-gray-100/50 flex justify-between items-end">
                                                 <div className="text-left">
                                                     <p className="text-[10px] text-gray-400 font-black tracking-widest uppercase">Verified by</p>
                                                     <p className="text-xl font-black text-gray-900 tracking-tighter">geekyZindagi</p>
                                                 </div>
-                                                <div className={cn("p-2 rounded-xl text-white", archetype.bg)}>
-                                                    <Rocket size={20} />
+                                                <div className={cn("p-2.5 rounded-2xl text-white shadow-lg", archetype.bg)}>
+                                                    <Rocket size={24} />
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div className="mt-12 flex gap-4">
-                                        <Button variant="outline" className="rounded-2xl border-2 border-gray-900 text-gray-900 hover:bg-gray-50 h-12 px-8 font-bold" onClick={() => window.print()}>
-                                            <Download size={18} className="mr-2" /> Export
+                                    <div className="mt-12 flex flex-col md:flex-row gap-4 w-full max-w-sm">
+                                        <Button variant="outline" className="flex-1 rounded-2xl border-2 border-gray-900 text-gray-900 hover:bg-gray-50 h-14 font-black text-lg shadow-sm" onClick={() => window.print()}>
+                                            <Download size={20} className="mr-2" /> Export
                                         </Button>
-                                        <Button className="rounded-2xl bg-gray-900 text-white hover:bg-black shadow-lg shadow-gray-900/10 h-12 px-8 font-bold">
-                                            <Share2 size={18} className="mr-2" /> Share
+                                        <Button className="flex-1 rounded-2xl bg-gray-900 text-white hover:bg-black shadow-2xl shadow-gray-900/40 h-14 font-black text-lg">
+                                            <Share2 size={20} className="mr-2" /> Share
                                         </Button>
                                     </div>
 
-                                    <p className="mt-8 text-gray-500 font-medium">
-                                        Already a member? <a href="/login" className="text-indigo-600 font-bold hover:underline">Sign in here</a>
+                                    <p className="mt-8 text-gray-500 font-medium text-center">
+                                        Already a member? <Link href="/login" className="text-indigo-600 font-black hover:underline underline-offset-4">Sign in here</Link>
                                     </p>
                                 </motion.div>
                             )}
