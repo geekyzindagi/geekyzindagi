@@ -413,7 +413,7 @@ export default function WizardForm() {
                                         <div className="pt-6 border-t border-slate-800/50 flex justify-between items-end">
                                             <div className="text-left">
                                                 <p className="text-[10px] text-slate-400 font-medium tracking-wider uppercase">Explorer at</p>
-                                                <p className="text-lg font-bold text-white tracking-tight">GeekyZindagi</p>
+                                                <p className="text-lg font-bold text-white tracking-tight">geekyZindagi</p>
                                             </div>
                                             <Laptop size={24} className="text-slate-600" />
                                         </div>
