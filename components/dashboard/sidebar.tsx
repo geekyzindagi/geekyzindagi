@@ -12,6 +12,7 @@ import {
   Lightbulb,
   Bell,
   BarChart3,
+  Compass,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
@@ -54,6 +55,11 @@ export function Sidebar({ isAdmin }: SidebarProps) {
       label: "Analytics",
       icon: BarChart3,
     },
+    {
+      href: "/admin/wizard",
+      label: "Explorers",
+      icon: Compass,
+    },
   ];
 
   const bottomNavItems = [
@@ -95,7 +101,7 @@ export function Sidebar({ isAdmin }: SidebarProps) {
   return (
     <aside
       className={cn(
-        "fixed left-0 top-0 z-30 h-screen border-r bg-background transition-all duration-300",
+        "hidden md:block h-screen border-r bg-background transition-all duration-300",
         collapsed ? "w-16" : "w-64"
       )}
     >

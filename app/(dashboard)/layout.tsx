@@ -38,7 +38,7 @@ export default function DashboardLayout({
   return (
     <div className="min-h-screen bg-muted/30">
       {/* Sidebar - hidden on mobile */}
-      <div className="hidden md:block">
+      <div className="hidden md:block fixed inset-y-0 z-50">
         <Sidebar isAdmin={isAdmin} />
       </div>
 
