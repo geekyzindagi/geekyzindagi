@@ -14,6 +14,7 @@ const links = {
   resources: [
     { name: "Blog", href: "/blog" },
     { name: "Projects", href: "/projects" },
+    { name: "Progress", href: "/progress" },
   ],
   community: [
     { name: "Events", href: "/events" },
@@ -26,7 +27,7 @@ const socials = [
   { icon: Github, href: "https://github.com/geekyzindagi", label: "GitHub" },
   { icon: Youtube, href: "https://youtube.com/@geekyzindagi", label: "YouTube" },
   { icon: Instagram, href: "https://instagram.com/geekyzindagi", label: "Instagram" },
-  { icon: Mail, href: "mailto:hello@geekyzindagi.com", label: "Email" },
+  { icon: Mail, href: "mailto:gkudte@geekyzindagi.com", label: "Email" },
 ];
 
 export function FooterNotion() {
@@ -82,8 +83,8 @@ export function FooterNotion() {
             <div className="text-sm text-gray-500">
               Made with ❤️ in India
             </div>
-            <div className="text-sm text-gray-500">
-              © {new Date().getFullYear()} GeekyZindagi. All rights reserved.
+            <div className="text-sm text-muted-foreground">
+              © {new Date().getFullYear()} geekyZindagi. All rights reserved.
             </div>
           </div>
         </div>

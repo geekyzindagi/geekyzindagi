@@ -7,9 +7,9 @@ import { IdeaForm } from "@/components/landing/IdeaForm";
 import { StatsProvider } from "@/context/StatsContext";
 
 export const metadata: Metadata = {
-  title: "Share Your Idea | Geeky Zindagi",
+  title: "Share Your Idea | geekyZindagi",
   description:
-    "Share your project idea with the Geeky Zindagi community. Become an Explorer and connect with Builders and Elders who can help bring your vision to life.",
+    "Share your project idea with the geekyZindagi community. Become an Explorer and connect with Builders and Elders who can help bring your vision to life.",
 };
 
 const progressionSteps = [
@@ -134,7 +134,7 @@ export default function IdeasPage() {
         {/* Footer */}
         <footer className="py-8 border-t border-gray-200">
           <div className="container mx-auto px-6 text-center text-gray-500 text-sm">
-            <p>© {new Date().getFullYear()} Geeky Zindagi. All rights reserved.</p>
+            <p>© {new Date().getFullYear()} geekyZindagi. All rights reserved.</p>
           </div>
         </footer>
       </div>

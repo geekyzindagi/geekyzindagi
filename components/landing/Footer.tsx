@@ -27,7 +27,7 @@ const socialLinks = [
   { icon: Github, href: "https://github.com/geekyzindagi", label: "GitHub" },
   { icon: Youtube, href: "https://youtube.com/@geekyzindagi", label: "YouTube" },
   { icon: Instagram, href: "https://instagram.com/geekyzindagi", label: "Instagram" },
-  { icon: Mail, href: "mailto:hello@geekyzindagi.com", label: "Email" },
+  { icon: Mail, href: "mailto:gkudte@geekyzindagi.com", label: "Email" },
 ];
 
 export function Footer() {
@@ -123,7 +123,7 @@ export function Footer() {
         {/* Bottom bar */}
         <div className="py-6 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-muted-foreground text-sm">
-            © {new Date().getFullYear()} GeekyZindagi. All rights reserved.
+            © {new Date().getFullYear()} geekyZindagi. All rights reserved.
           </p>
           <p className="text-muted-foreground text-sm">
             Made with 💜 by geeks, for geeks

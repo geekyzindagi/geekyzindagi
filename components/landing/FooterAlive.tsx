@@ -27,7 +27,7 @@ const socials = [
   { icon: Github, href: "https://github.com/geekyzindagi", label: "GitHub" },
   { icon: Youtube, href: "https://youtube.com/@geekyzindagi", label: "YouTube" },
   { icon: Instagram, href: "https://instagram.com/geekyzindagi", label: "Instagram" },
-  { icon: Mail, href: "mailto:hello@geekyzindagi.com", label: "Email" },
+  { icon: Mail, href: "mailto:gkudte@geekyzindagi.com", label: "Email" },
 ];
 
 export function FooterAlive() {
@@ -138,7 +138,7 @@ export function FooterAlive() {
             </div>
 
             <div className="text-sm text-muted-foreground">
-              © {new Date().getFullYear()} GeekyZindagi
+              © {new Date().getFullYear()} geekyZindagi
             </div>
           </motion.div>
         </div>

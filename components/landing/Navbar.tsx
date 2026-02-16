@@ -91,7 +91,7 @@ export function Navbar({ user }: NavbarProps) {
                   asChild
                   className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white rounded-full px-6"
                 >
-                  <Link href="/login">Sign In</Link>
+                  <Link href="/ideas">Get Started</Link>
                 </Button>
               )}
             </div>
@@ -138,7 +138,7 @@ export function Navbar({ user }: NavbarProps) {
                 asChild
                 className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white rounded-full"
               >
-                <Link href="/login">Sign In</Link>
+                <Link href="/ideas">Get Started</Link>
               </Button>
             )}
           </div>

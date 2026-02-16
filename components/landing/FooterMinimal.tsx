@@ -26,7 +26,7 @@ const socials = [
   { icon: Github, href: "https://github.com/geekyzindagi", label: "GitHub" },
   { icon: Youtube, href: "https://youtube.com/@geekyzindagi", label: "YouTube" },
   { icon: Instagram, href: "https://instagram.com/geekyzindagi", label: "Instagram" },
-  { icon: Mail, href: "mailto:hello@geekyzindagi.com", label: "Email" },
+  { icon: Mail, href: "mailto:gkudte@geekyzindagi.com", label: "Email" },
 ];
 
 export function FooterMinimal() {
@@ -66,7 +66,7 @@ export function FooterMinimal() {
           {/* Bottom */}
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 pt-8 border-t border-white/5">
             <div className="text-sm text-muted-foreground">
-              © {new Date().getFullYear()} GeekyZindagi
+              © {new Date().getFullYear()} geekyZindagi
             </div>
 
             <div className="flex items-center gap-4">

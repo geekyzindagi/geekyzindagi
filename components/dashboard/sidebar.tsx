@@ -13,6 +13,7 @@ import {
   Bell,
   BarChart3,
   Compass,
+  Milestone,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
@@ -31,6 +32,11 @@ export function Sidebar({ isAdmin }: SidebarProps) {
       href: "/dashboard",
       label: "Dashboard",
       icon: LayoutDashboard,
+    },
+    {
+      href: "/progress",
+      label: "Progress",
+      icon: Milestone,
     },
   ];
 
