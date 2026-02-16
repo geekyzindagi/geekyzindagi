@@ -101,7 +101,7 @@ export function NavbarAlive({ session }: NavbarAliveProps) {
                     </Link>
                     <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                       <Link
-                        href="/login"
+                        href="/ideas"
                         className="relative px-5 py-2 rounded-full bg-white text-black text-sm font-medium overflow-hidden group"
                       >
                         <motion.span
@@ -190,7 +190,7 @@ export function NavbarAlive({ session }: NavbarAliveProps) {
                   className="mt-8"
                 >
                   <Link
-                    href="/login"
+                    href="/ideas"
                     onClick={() => setIsOpen(false)}
                     className="block w-full py-4 rounded-full bg-white text-black text-center font-medium"
                   >

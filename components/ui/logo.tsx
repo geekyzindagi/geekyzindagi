@@ -14,12 +14,12 @@ export function Logo({ className, href = "/" }: LogoProps) {
       href={href}
       className={cn("flex items-center tracking-tighter group select-none relative", className)}
     >
-      <span className="text-xl font-black text-gray-900 lowercase mr-0.5 tracking-[-0.05em]">
+      <span className="text-xl font-black text-[#1a1c2c] lowercase tracking-[-0.05em]">
         geeky
       </span>
-      <div className="relative inline-block px-1">
+      <div className="relative inline-block">
         <span className={cn(
-          "text-xl font-black bg-gradient-to-br from-gray-900 via-indigo-950 to-purple-900 bg-clip-text text-transparent",
+          "text-xl font-black bg-gradient-to-br from-[#1a1c2c] via-indigo-900 to-purple-800 bg-clip-text text-transparent",
           "drop-shadow-[0.5px_0.5px_0px_rgba(255,255,255,0.8)] transition-all duration-300 group-hover:drop-shadow-[1px_1px_2px_rgba(0,0,0,0.2)]",
           "relative z-10 antialiased"
         )}>

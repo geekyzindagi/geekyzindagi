@@ -4,11 +4,29 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { useState, useEffect } from "react";
+import { NeuralDomainBackground } from "./NeuralDomainBackground";
+
+// Word to Domain mapping
+const WORD_MAPPING = [
+  { word: "Zindagi", domainId: "all" },
+  { word: "Potential", domainId: "education" },
+  { word: "Purpose", domainId: "wellness" },
+  { word: "Ideas", domainId: "business" },
+  { word: "Skills", domainId: "tech" },
+  { word: "Future", domainId: "science" },
+  { word: "Art", domainId: "creative" },
+  { word: "Growth", domainId: "community" },
+];
+
+const words = WORD_MAPPING.map(m => m.word);
+
+interface TypewriterWordProps {
+  currentIndex: number;
+  onIndexChange: (index: number) => void;
+}
 
 // Typewriter effect for alternating words
-function TypewriterWord() {
-  const words = ["Zindagi", "Potential", "Purpose", "Ideas", "Skills", "Future", "Growth"];
-  const [currentIndex, setCurrentIndex] = useState(0);
+function TypewriterWord({ currentIndex, onIndexChange }: TypewriterWordProps) {
   const [displayText, setDisplayText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -27,17 +45,17 @@ function TypewriterWord() {
           setDisplayText(displayText.slice(0, -1));
         } else {
           setIsDeleting(false);
-          setCurrentIndex((prev) => (prev + 1) % words.length);
+          onIndexChange((currentIndex + 1) % words.length);
         }
       }
     }, isDeleting ? 50 : 100);
 
     return () => clearTimeout(timeout);
-  }, [displayText, isDeleting, currentIndex, words]);
+  }, [displayText, isDeleting, currentIndex, onIndexChange]);
 
   return (
-    <span className="relative inline-flex items-center min-w-[3ch] py-0.5">
-      <span className="relative z-10 font-black tracking-tighter bg-gradient-to-r from-indigo-500 via-rose-500 to-orange-500 bg-clip-text text-transparent transform-gpu italic">
+    <span className="relative inline-flex items-center min-w-[5ch] py-0.5">
+      <span className="relative z-10 font-bold tracking-tighter bg-gradient-to-r from-indigo-500 via-rose-500 to-orange-500 bg-clip-text text-transparent transform-gpu italic">
         {displayText}
       </span>
       <motion.span
@@ -50,34 +68,42 @@ function TypewriterWord() {
 }
 
 // Simple illustration using shapes and emoji
-function NotionIllustration() {
+function NotionIllustration({ activeDomainId }: { activeDomainId: string }) {
   const blocks = [
-    { emoji: "📝", label: "Notes", color: "bg-amber-100", x: "8%", y: "5%" },
-    { emoji: "✅", label: "Tasks", color: "bg-green-100", x: "50%", y: "15%" },
-    { emoji: "📊", label: "Data", color: "bg-blue-100", x: "20%", y: "40%" },
-    { emoji: "🎯", label: "Goals", color: "bg-pink-100", x: "60%", y: "60%" },
-    { emoji: "💡", label: "Ideas", color: "bg-purple-100", x: "5%", y: "70%" },
+    { id: "tech", emoji: "🛠️", label: "Skills", color: "bg-amber-100", x: "8%", y: "5%" },
+    { id: "education", emoji: "📚", label: "Potential", color: "bg-green-100", x: "50%", y: "15%" },
+    { id: "community", emoji: "👥", label: "Growth", color: "bg-blue-100", x: "20%", y: "40%" },
+    { id: "wellness", emoji: "🎯", label: "Purpose", color: "bg-pink-100", x: "60%", y: "60%" },
+    { id: "business", emoji: "💡", label: "Ideas", color: "bg-purple-100", x: "5%", y: "70%" },
   ];
 
   return (
     <div className="relative w-full max-w-[340px] aspect-[4/3] mx-auto lg:scale-110 transition-transform duration-700">
-      {blocks.map((block, i) => (
-        <motion.div
-          key={block.label}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 + i * 0.1, duration: 0.5 }}
-          className={`absolute ${block.color} rounded-xl p-3 sm:p-3.5 shadow-md border border-black/5 whitespace-nowrap backdrop-blur-sm`}
-          style={{ left: block.x, top: block.y }}
-          whileHover={{ y: -4, scale: 1.03, boxShadow: "0 10px 25px rgba(0,0,0,0.08)" }}
-        >
-          <span className="text-xl sm:text-2xl">{block.emoji}</span>
-          <span className="ml-2 text-xs sm:text-sm font-bold text-gray-800">{block.label}</span>
-        </motion.div>
-      ))}
-      
+      {blocks.map((block, i) => {
+        const isActive = activeDomainId === "all" || activeDomainId === block.id;
+
+        return (
+          <motion.div
+            key={block.label}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{
+              opacity: 1,
+              y: isActive ? -5 : 0,
+              scale: isActive ? 1.1 : 1,
+              boxShadow: isActive ? "0 10px 25px rgba(0,0,0,0.15)" : "0 4px 6px rgba(0,0,0,0.05)"
+            }}
+            transition={{ duration: 0.4 }}
+            className={`absolute ${block.color} rounded-xl p-3 sm:p-3.5 shadow-md border border-black/5 whitespace-nowrap backdrop-blur-sm z-20`}
+            style={{ left: block.x, top: block.y }}
+          >
+            <span className="text-xl sm:text-2xl">{block.emoji}</span>
+            <span className="ml-2 text-xs sm:text-sm font-bold text-gray-800">{block.label}</span>
+          </motion.div>
+        );
+      })}
+
       {/* Connecting lines */}
-      <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-20 sm:opacity-100" style={{ zIndex: -1 }}>
+      <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-20 sm:opacity-100" style={{ zIndex: 0 }}>
         <motion.path
           d="M 60 30 Q 120 80 200 60"
           stroke="#e5e5e5"
@@ -102,12 +128,18 @@ function NotionIllustration() {
 }
 
 export function HeroNotion() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const activeDomainId = WORD_MAPPING[currentIndex].domainId;
+
   return (
-    <section className="min-h-[85vh] flex items-center justify-center pt-24 pb-12 bg-[#FFFCF8] overflow-hidden">
-      <div className="container mx-auto px-6 max-w-6xl">
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-10 lg:gap-16">
+    <section className="relative min-h-screen flex items-center justify-center pt-20 pb-12 bg-[#FFFCF8] overflow-hidden">
+      {/* Background Layer */}
+      <NeuralDomainBackground activeDomainId={activeDomainId} />
+
+      <div className="container mx-auto px-6 max-w-6xl relative z-10">
+        <div className="flex flex-col lg:flex-row items-center justify-center gap-10 lg:gap-16">
           {/* Content */}
-          <div className="flex-1 text-center lg:text-left z-10">
+          <div className="min-w-[50%] flex-1 text-center lg:text-left flex flex-col justify-center">
             <motion.div
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
@@ -125,10 +157,10 @@ export function HeroNotion() {
               transition={{ duration: 0.5, delay: 0.1 }}
               className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-gray-900 tracking-tighter mb-4 leading-none"
             >
-              <div className="flex flex-row flex-nowrap items-baseline justify-center lg:justify-start gap-x-2 sm:gap-x-4 whitespace-nowrap">
+              <div className="flex flex-row flex-nowrap items-baseline justify-center lg:justify-start gap-x-2 sm:gap-x-4 whitespace-nowrap overflow-visible">
                 <span>Explore</span>
                 <span className="text-gray-300 font-light hidden sm:inline">your</span>
-                <TypewriterWord />
+                <TypewriterWord currentIndex={currentIndex} onIndexChange={setCurrentIndex} />
               </div>
             </motion.h1>
 
@@ -138,7 +170,7 @@ export function HeroNotion() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="text-base md:text-lg text-gray-600 mb-8 max-w-md mx-auto lg:mx-0 leading-relaxed font-medium"
             >
-              Geeky Zindagi is where curiosity meets implementation. Build skills, join projects, and grow your potential.
+              geekyZindagi is where curiosity meets implementation. Build skills, join projects, and grow your potential.
             </motion.p>
 
             <motion.div
@@ -148,7 +180,7 @@ export function HeroNotion() {
               className="flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start"
             >
               <Link
-                href="/login"
+                href="/ideas"
                 className="w-full sm:w-auto px-10 py-3.5 bg-gray-900 text-white rounded-full font-bold hover:bg-black transition-all shadow-lg hover:shadow-black/10 flex items-center justify-center gap-2"
               >
                 Join Now <ArrowRight className="w-4 h-4" />
@@ -167,13 +199,14 @@ export function HeroNotion() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="flex-1 flex justify-center w-full max-w-md lg:max-w-none"
+            className="w-full lg:w-[450px] flex justify-center flex-shrink-0"
           >
-            <NotionIllustration />
+            <NotionIllustration activeDomainId={activeDomainId} />
           </motion.div>
         </div>
       </div>
     </section>
   );
 }
+
 

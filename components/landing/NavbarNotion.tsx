@@ -15,6 +15,7 @@ const navLinks = [
   { name: "Mentorship", href: "/mentorship" },
   { name: "Projects", href: "/projects" },
   { name: "Blog", href: "/blog" },
+  { name: "Progress", href: "/progress" },
 ];
 
 export function NavbarNotion() {
@@ -60,7 +61,7 @@ export function NavbarNotion() {
                     Log in
                   </Link>
                   <Link
-                    href="/login"
+                    href="/ideas"
                     className="px-4 py-2 rounded-lg bg-gray-900 text-white text-sm font-medium hover:bg-gray-800 transition-colors"
                   >
                     Get Started
@@ -105,7 +106,7 @@ export function NavbarNotion() {
               ))}
               <hr className="my-4 border-gray-200" />
               <Link
-                href="/login"
+                href="/ideas"
                 onClick={() => setIsOpen(false)}
                 className="px-4 py-3 text-center rounded-xl bg-gray-900 text-white font-medium"
               >

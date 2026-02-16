@@ -55,7 +55,7 @@ const socialLinks = [
   { icon: Github, href: "https://github.com/geekyzindagi", label: "GitHub" },
   { icon: Youtube, href: "https://youtube.com/@geekyzindagi", label: "YouTube" },
   { icon: Instagram, href: "https://instagram.com/geekyzindagi", label: "Instagram" },
-  { icon: Mail, href: "mailto:hello@geekyzindagi.com", label: "Email" },
+  { icon: Mail, href: "mailto:gkudte@geekyzindagi.com", label: "Email" },
 ];
 
 export function FooterBento() {
@@ -179,7 +179,7 @@ export function FooterBento() {
           </div>
 
           <div className="flex items-center gap-6 text-sm text-muted-foreground">
-            <span>© {new Date().getFullYear()} GeekyZindagi</span>
+            <span>© {new Date().getFullYear()} geekyZindagi</span>
             <span className="hidden md:inline">•</span>
             <span className="hidden md:inline">All rights reserved</span>
           </div>
