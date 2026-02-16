@@ -20,6 +20,9 @@ const footerLinks = {
     { label: "Privacy Policy", href: "/privacy" },
     { label: "Terms of Service", href: "/terms" },
   ],
+  forms: [
+    { label: "Geek Explorer", href: "/geek-explorer" },
+  ],
 };
 
 const socialLinks = [
@@ -38,7 +41,7 @@ export function Footer() {
 
       <div className="container mx-auto px-4 relative z-10">
         {/* Main footer content */}
-        <div className="py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+        <div className="py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
           {/* Brand column */}
           <div className="lg:col-span-1">
             <Logo className="mb-4" />
@@ -89,6 +92,24 @@ export function Footer() {
             </h4>
             <ul className="space-y-3">
               {footerLinks.resources.map((link) => (
+                <li key={link.label}>
+                  <Link
+                    href={link.href}
+                    className="text-muted-foreground hover:text-purple-400 transition-colors text-sm"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="font-semibold mb-4 text-sm uppercase tracking-wider text-purple-400">
+              Forms
+            </h4>
+            <ul className="space-y-3">
+              {footerLinks.forms.map((link) => (
                 <li key={link.label}>
                   <Link
                     href={link.href}
