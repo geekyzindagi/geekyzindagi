@@ -11,6 +11,7 @@ const navLinks = [
   { label: "Story", href: "#story" },
   { label: "Features", href: "#features" },
   { label: "Community", href: "#community" },
+  { label: "Geek Explorer", href: "/geek-explorer" },
 ];
 
 interface NavbarProps {
