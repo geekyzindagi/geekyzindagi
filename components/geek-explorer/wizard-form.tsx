@@ -2,6 +2,8 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Link from 'next/link';
+
 import { Laptop, Palette, Tent, Dice5, Film, Users, Check, ArrowRight, Sparkles, Mail, Share2, Download, Atom, Activity, Coffee, Rocket } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -9,6 +11,7 @@ import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
 import apiClient from '@/lib/api-client';
 import { Card, CardContent } from '@/components/ui/card';
+import { useAuth } from '@/context/AuthContext';
 
 // 1. Data Structure
 const STEPS = [
@@ -65,10 +68,12 @@ const INTERESTS_BY_REALM: Record<string, string[]> = {
     ],
 };
 
+import { NeuralDomainBackground } from '@/components/landing/NeuralDomainBackground';
+
 export default function WizardForm() {
+    const { isAuthenticated } = useAuth();
     const [currentStep, setCurrentStep] = useState(0);
     const [submissionId, setSubmissionId] = useState<string | null>(null);
-    // Initialize realms with ALL IDs by default
     const [formData, setFormData] = useState<{ realms: string[], interests: string[], email: string }>({
         realms: REALMS.map(r => r.id),
         interests: [],
@@ -77,6 +82,37 @@ export default function WizardForm() {
     const [customInterest, setCustomInterest] = useState('');
     const cardRef = useRef<HTMLDivElement>(null);
     const hasStartedRef = useRef(false);
+
+    // Determine Archetype
+    const getArchetype = () => {
+        const realmCounts: Record<string, number> = {};
+        formData.interests.forEach(interest => {
+            for (const [realmId, interests] of Object.entries(INTERESTS_BY_REALM)) {
+                if (interests.includes(interest)) {
+                    realmCounts[realmId] = (realmCounts[realmId] || 0) + 1;
+                }
+            }
+        });
+
+        let topRealmId = REALMS[0].id;
+        let maxCount = -1;
+        for (const [realmId, count] of Object.entries(realmCounts)) {
+            if (count > maxCount) {
+                maxCount = count;
+                topRealmId = realmId;
+            }
+        }
+
+        const realm = REALMS.find(r => r.id === topRealmId);
+        return {
+            id: topRealmId,
+            title: realm?.archetype || "Explorer",
+            color: realm?.text || "text-slate-400",
+            bg: realm?.bg || "bg-slate-800",
+            border: realm?.color || "border-slate-800",
+            glow: realm?.color.replace('border-', 'shadow-') || "shadow-indigo-500"
+        };
+    };
 
     // Analytics: Start session on mount immediately
     useEffect(() => {
@@ -173,299 +209,297 @@ export default function WizardForm() {
 
     const prevStep = () => setCurrentStep(prev => prev - 1);
 
-    // Determine Archetype
-    const getArchetype = () => {
-        // Find realm with most selected interests
-        const realmCounts: Record<string, number> = {};
-
-        formData.interests.forEach(interest => {
-            for (const [realmId, interests] of Object.entries(INTERESTS_BY_REALM)) {
-                if (interests.includes(interest)) {
-                    realmCounts[realmId] = (realmCounts[realmId] || 0) + 1;
-                }
-            }
-        });
-
-        // Get realm with max count, defaulting to first realm of no interests
-        let topRealmId = REALMS[0].id;
-        let maxCount = -1;
-
-        for (const [realmId, count] of Object.entries(realmCounts)) {
-            if (count > maxCount) {
-                maxCount = count;
-                topRealmId = realmId;
-            }
-        }
-
-        const realm = REALMS.find(r => r.id === topRealmId);
-
-        return {
-            title: realm?.archetype || "Explorer",
-            color: realm?.text || "text-slate-400",
-            bg: realm?.bg || "bg-slate-800",
-            border: realm?.color || "border-slate-800"
-        };
-    };
-
     const archetype = getArchetype();
 
-    // Helper to identify custom interests
-    const allKnownInterests = Object.values(INTERESTS_BY_REALM).flat();
-    const customInterests = formData.interests.filter(i => !allKnownInterests.includes(i));
+    // Sync with Background
+    const activeDomainId = formData.interests.length > 0 ? archetype.id : "all";
 
     return (
-        <div className="min-h-screen bg-slate-950 text-white flex flex-col items-center justify-center p-4">
+        <div className="relative min-h-screen bg-[#FFFCF8] flex flex-col items-center justify-center p-4 overflow-hidden">
+            {/* Immersive Neural Background */}
+            <NeuralDomainBackground activeDomainId={activeDomainId} />
 
             {/* Progress Bar (Skip on Intro & Result) */}
             {currentStep < STEPS.length - 1 && (
-                <div className="w-full max-w-xl mb-6 flex gap-2">
+                <div className="w-full max-w-xl mb-12 flex gap-3 relative z-10 px-4">
                     {STEPS.map((step, idx) => {
                         if (idx === STEPS.length - 1) return null;
                         return (
                             <div key={step.id} className={cn(
-                                "h-1.5 flex-1 rounded-full transition-all duration-500",
-                                idx <= currentStep ? "bg-indigo-500" : "bg-slate-800"
+                                "h-1 flex-1 rounded-full transition-all duration-700",
+                                idx <= currentStep ? "bg-indigo-600 shadow-[0_0_10px_rgba(79,70,229,0.5)]" : "bg-gray-200"
                             )} />
                         );
                     })}
                 </div>
             )}
 
-            <div className={cn(
-                "w-full bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl overflow-hidden relative flex flex-col transition-all duration-500",
-                // Responsive height: Takes up mostly full screen on mobile, adaptable on desktop
-                "h-[85vh] md:h-auto md:min-h-[600px] md:max-h-[80vh]",
-                currentStep === STEPS.length - 1 ? "max-w-md border-2 border-indigo-500/50 shadow-indigo-500/10" : "max-w-4xl" // Wider container for interests
-            )}>
+            <motion.div
+                layout
+                className={cn(
+                    "w-full max-w-4xl relative z-10 transition-all duration-700",
+                    currentStep === STEPS.length - 1 ? "max-w-md" : "max-w-4xl"
+                )}
+            >
+                {/* Glassmorphic Container */}
+                <div className={cn(
+                    "bg-white/70 backdrop-blur-xl border border-white/40 rounded-3xl overflow-hidden relative flex flex-col transition-all duration-700",
+                    "shadow-[0_20px_50px_rgba(0,0,0,0.1)]",
+                    // Dynamic Archetype Glow
+                    formData.interests.length > 0 && `shadow-[0_0_40px_-5px_rgba(0,0,0,0.1),0_0_80px_-10px_${archetype.glow.replace('shadow-', '')}]`,
+                    "h-[85vh] md:h-auto md:min-h-[550px] md:max-h-[85vh]"
+                )}>
 
-                {/* Scrollable Content Area - Key for Responsiveness */}
-                <div className="flex-1 overflow-y-auto overflow-x-hidden p-6 md:p-8 custom-scrollbar relative">
-                    <AnimatePresence mode="wait" initial={false}>
-
-                        {/* STEP 0: INTERESTS (EXTENSIVE & GROUPED) */}
-                        {currentStep === 0 && (
-                            <motion.div
-                                key="interests"
-                                initial={{ opacity: 0, scale: 0.95 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                exit={{ opacity: 0, x: -50 }}
-                                transition={{ duration: 0.3 }}
-                                className="space-y-6 pb-20" // Extra padding for footer
-                            >
-                                <div className="text-center space-y-2 pb-4 pt-2">
-                                    <h2 className="text-2xl md:text-3xl font-bold">Select Your Interests</h2>
-                                    <p className="text-slate-400 text-sm md:text-base">What makes you tick? Pick as many as you like.</p>
-                                </div>
-
-                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                    {formData.realms.map(realmId => {
-                                        const realm = REALMS.find(r => r.id === realmId);
-                                        const interests = INTERESTS_BY_REALM[realmId] || [];
-                                        if (!realm) return null;
-
-                                        return (
-                                            <div key={realmId} className="space-y-3 break-inside-avoid">
-                                                <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-500 border-b border-slate-800 pb-1 mb-2">
-                                                    <realm.icon size={14} className={realm.text} />
-                                                    {realm.label}
-                                                </div>
-                                                <div className="flex flex-wrap gap-2">
-                                                    {interests.map((interest) => {
-                                                        const isSelected = formData.interests.includes(interest);
-                                                        return (
-                                                            <button
-                                                                key={interest}
-                                                                onClick={() => toggleInterest(interest)}
-                                                                className={cn(
-                                                                    "px-2.5 py-1.5 rounded-md border transition-all duration-200 text-xs md:text-sm font-medium",
-                                                                    isSelected
-                                                                        ? `bg-slate-800 ${realm.color} text-white shadow-sm ring-1 ring-offset-1 ring-offset-slate-900 ${realm.text.replace('text-', 'ring-')}`
-                                                                        : "bg-slate-900/50 border-slate-700 text-slate-400 hover:border-slate-500 hover:text-slate-200"
-                                                                )}
-                                                            >
-                                                                {interest}
-                                                            </button>
-                                                        );
-                                                    })}
-                                                </div>
-                                            </div>
-                                        )
-                                    })}
-                                </div>
-
-                                {/* Custom Interests Section */}
-                                <div className="space-y-4 pt-6 mt-6 border-t border-slate-800">
-                                    <div className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-slate-500">
-                                        <Sparkles size={16} className="text-amber-500" />
-                                        My Unique Interests
+                    {/* Content Area */}
+                    <div className="flex-1 overflow-y-auto overflow-x-hidden p-8 md:p-12 custom-scrollbar">
+                        <AnimatePresence mode="wait">
+                            {/* STEP 0: INTERESTS */}
+                            {currentStep === 0 && (
+                                <motion.div
+                                    key="interests"
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, scale: 0.95 }}
+                                    transition={{ duration: 0.5 }}
+                                    className="space-y-10"
+                                >
+                                    <div className="text-center space-y-3">
+                                        <motion.div
+                                            initial={{ scale: 0.9 }}
+                                            animate={{ scale: 1 }}
+                                            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 text-indigo-600 text-[10px] font-bold uppercase tracking-widest mb-2"
+                                        >
+                                            <Sparkles size={12} /> The Implementation Quiz
+                                        </motion.div>
+                                        <h2 className="text-3xl md:text-5xl font-black text-gray-900 tracking-tighter leading-none">
+                                            What drives your curiosity?
+                                        </h2>
+                                        <p className="text-gray-500 text-sm md:text-lg font-medium max-w-xl mx-auto">
+                                            Select the realms that define your journey. Your background network will evolve with you.
+                                        </p>
                                     </div>
 
-                                    <div className="bg-slate-950/50 p-4 rounded-xl border border-slate-800 space-y-3">
-                                        {customInterests.length > 0 && (
-                                            <div className="flex flex-wrap gap-2">
-                                                {customInterests.map((interest) => (
-                                                    <button
-                                                        key={interest}
-                                                        onClick={() => toggleInterest(interest)}
-                                                        className="px-3 py-1.5 rounded-lg border border-amber-500/50 bg-amber-500/10 text-amber-200 shadow-sm text-sm flex items-center gap-2 hover:bg-amber-500/20 transition-colors"
-                                                    >
-                                                        {interest}
-                                                        <span className="opacity-70 text-xs hover:opacity-100">×</span>
-                                                    </button>
-                                                ))}
-                                            </div>
-                                        )}
+                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                                        {formData.realms.map(realmId => {
+                                            const realm = REALMS.find(r => r.id === realmId);
+                                            const interests = INTERESTS_BY_REALM[realmId] || [];
+                                            if (!realm) return null;
 
-                                        <div className="flex gap-2">
+                                            return (
+                                                <div key={realmId} className="space-y-4">
+                                                    <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-gray-400 border-b border-gray-100 pb-2">
+                                                        <realm.icon size={14} className={realm.text} />
+                                                        {realm.label}
+                                                    </div>
+                                                    <div className="flex flex-wrap gap-2">
+                                                        {interests.map((interest) => {
+                                                            const isSelected = formData.interests.includes(interest);
+                                                            return (
+                                                                <button
+                                                                    key={interest}
+                                                                    onClick={() => toggleInterest(interest)}
+                                                                    className={cn(
+                                                                        "px-3 py-2 rounded-xl border transition-all duration-300 text-xs md:text-sm font-semibold",
+                                                                        isSelected
+                                                                            ? `bg-gray-900 border-gray-900 text-white shadow-lg scale-105`
+                                                                            : "bg-white/50 border-gray-200 text-gray-500 hover:border-gray-400 hover:text-gray-900 hover:bg-white"
+                                                                    )}
+                                                                >
+                                                                    {interest}
+                                                                </button>
+                                                            );
+                                                        })}
+                                                    </div>
+                                                </div>
+                                            )
+                                        })}
+                                    </div>
+
+                                    {/* Custom Interests */}
+                                    <div className="pt-8">
+                                        <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-gray-400 mb-4">
+                                            <Atom size={14} className="text-indigo-500" />
+                                            Something Unique?
+                                        </div>
+                                        <div className="flex gap-2 max-w-md">
                                             <Input
-                                                placeholder="Add something else..."
+                                                placeholder="Add a custom interest..."
                                                 value={customInterest}
                                                 onChange={(e) => setCustomInterest(e.target.value)}
                                                 onKeyDown={handleCustomInterestKeyDown}
-                                                className="bg-slate-900 border-slate-700 text-sm h-10 focus-visible:ring-amber-500"
+                                                className="bg-white/50 border-gray-200 rounded-xl focus-visible:ring-indigo-500 h-10"
                                             />
-                                            <Button size="sm" onClick={addCustomInterest} className="bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 h-10 px-4">
+                                            <Button onClick={addCustomInterest} className="bg-gray-900 text-white rounded-xl h-10 px-6 hover:bg-gray-800">
                                                 Add
                                             </Button>
                                         </div>
                                     </div>
-                                </div>
-                            </motion.div>
-                        )}
+                                </motion.div>
+                            )}
 
-                        {/* STEP 1: CONTACT */}
-                        {currentStep === 1 && (
-                            <motion.div
-                                key="contact"
-                                initial={{ opacity: 0, x: 50 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                exit={{ opacity: 0, x: -50 }}
-                                transition={{ duration: 0.3 }}
-                                className="flex-1 flex flex-col items-center justify-center text-center space-y-8 min-h-[400px]"
-                            >
-                                <div className="space-y-2">
-                                    <div className="flex justify-center mb-4">
-                                        <div className="bg-slate-800 p-4 rounded-full animate-pulse-slow">
-                                            <Mail size={40} className="text-indigo-400" />
+                            {/* STEP 1: CONTACT */}
+                            {currentStep === 1 && (
+                                <motion.div
+                                    key="contact"
+                                    initial={{ opacity: 0, scale: 0.95 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    exit={{ opacity: 0, x: -50 }}
+                                    transition={{ duration: 0.5 }}
+                                    className="flex-1 flex flex-col items-center justify-center text-center space-y-10 min-h-[400px]"
+                                >
+                                    <div className="space-y-4">
+                                        <div className="flex justify-center">
+                                            <motion.div
+                                                animate={{ y: [0, -10, 0] }}
+                                                transition={{ repeat: Infinity, duration: 3 }}
+                                                className="bg-indigo-600 p-6 rounded-3xl shadow-xl shadow-indigo-500/20"
+                                            >
+                                                <Mail size={48} className="text-white" />
+                                            </motion.div>
                                         </div>
+                                        <h2 className="text-4xl md:text-6xl font-black text-gray-900 tracking-tighter italic">
+                                            Almost there.
+                                        </h2>
+                                        <p className="text-gray-500 font-medium max-w-sm mx-auto">
+                                            Join the waitlist to get your customized dashboard and implementation guides.
+                                        </p>
                                     </div>
-                                    <h2 className="text-3xl font-bold">Stay in the Loop</h2>
-                                    <p className="text-slate-400 max-w-sm mx-auto">
-                                        Get updates on your chosen realms and personalized recommendations.
-                                    </p>
-                                </div>
 
-                                <div className="w-full max-w-sm space-y-4">
-                                    <Input
-                                        type="email"
-                                        placeholder="you@geekyzindagi.com"
-                                        className="bg-slate-800/50 border-slate-700 text-white placeholder:text-slate-500 h-12 text-lg text-center focus-visible:ring-indigo-500 focus:bg-slate-800 transition-colors"
-                                        value={formData.email}
-                                        onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                                    />
-                                    <Button
-                                        onClick={nextStep}
-                                        size="lg"
-                                        className="w-full bg-indigo-600 hover:bg-indigo-500 text-white h-12 text-lg rounded-xl shadow-lg shadow-indigo-500/20"
-                                    >
-                                        Reveal My Card
-                                    </Button>
-                                </div>
+                                    <div className="w-full max-w-md space-y-6">
+                                        <Input
+                                            type="email"
+                                            placeholder="your@email.com"
+                                            className="bg-white/80 border-gray-200 text-gray-900 placeholder:text-gray-400 h-14 text-xl text-center rounded-2xl focus-visible:ring-indigo-500 shadow-sm"
+                                            value={formData.email}
+                                            onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+                                        />
+                                        <Button
+                                            onClick={nextStep}
+                                            size="lg"
+                                            className="w-full bg-gray-900 hover:bg-black text-white h-14 text-xl rounded-2xl shadow-xl transition-all hover:scale-[1.02]"
+                                        >
+                                            Reveal My Identity
+                                        </Button>
+                                        <button onClick={nextStep} className="text-sm font-bold text-gray-400 hover:text-gray-900 transition-colors uppercase tracking-widest">
+                                            Skip for now
+                                        </button>
+                                    </div>
+                                </motion.div>
+                            )}
 
-                                <button onClick={nextStep} className="text-xs text-slate-500 hover:text-white underline decoration-dashed transition-colors">
-                                    Skip & Reveal
-                                </button>
-                            </motion.div>
-                        )}
+                            {/* STEP 2: GEEK CARD */}
 
-                        {/* STEP 2: GEEK CARD RESULT */}
-                        {currentStep === 2 && (
-                            <motion.div
-                                key="result"
-                                initial={{ opacity: 0, scale: 0.8 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                transition={{ type: "spring", duration: 0.6 }}
-                                className="flex-1 flex flex-col items-center justify-center min-h-[500px]"
-                            >
-                                <div ref={cardRef} className="w-full bg-slate-950 border border-slate-800 p-6 md:p-8 rounded-2xl relative overflow-hidden group max-w-sm transform transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl">
-                                    {/* Background Glow */}
-                                    <div className={cn("absolute top-0 right-0 w-64 h-64 bg-gradient-to-br opacity-20 blur-3xl rounded-full translate-x-1/3 -translate-y-1/3", archetype.bg.replace("bg-", "from-"))} />
+                            {currentStep === 2 && (
+                                <motion.div
+                                    key="result"
+                                    initial={{ opacity: 0, scale: 0.8, rotateY: 30 }}
+                                    animate={{ opacity: 1, scale: 1, rotateY: 0 }}
+                                    transition={{ type: "spring", stiffness: 100, damping: 15 }}
+                                    className="flex-1 flex flex-col items-center justify-center py-10"
+                                >
+                                    <div ref={cardRef} className="w-full bg-white/80 backdrop-blur-2xl border-2 border-white/50 p-10 rounded-[2.5rem] relative overflow-hidden max-w-sm shadow-[0_30px_100px_rgba(0,0,0,0.15)] group">
+                                        {/* Shimmer Effect Layer */}
+                                        <motion.div
+                                            animate={{ x: ['100%', '-100%'] }}
+                                            transition={{ repeat: Infinity, duration: 3, ease: 'linear' }}
+                                            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent skew-x-12 pointer-events-none"
+                                        />
 
-                                    <div className="relative z-10 text-center space-y-6">
-                                        <div className="space-y-1">
-                                            <p className="text-xs font-medium uppercase tracking-widest text-slate-500">I am a</p>
-                                            <h2 className={cn("text-3xl md:text-4xl font-black uppercase italic tracking-tighter", archetype.color)}>
-                                                {archetype.title}
-                                            </h2>
-                                        </div>
+                                        <div className={cn("absolute top-0 right-0 w-80 h-80 bg-gradient-to-br opacity-20 blur-3xl rounded-full translate-x-1/2 -translate-y-1/2", archetype.bg.replace("bg-", "from-"))} />
 
-                                        <div className="flex flex-wrap justify-center gap-2">
-                                            {formData.interests.slice(0, 5).map(tag => (
-                                                <span key={tag} className="text-[10px] md:text-xs px-2 py-1 rounded bg-slate-900 border border-slate-800 text-slate-300">
-                                                    #{tag}
-                                                </span>
-                                            ))}
-                                            {formData.interests.length > 5 && (
-                                                <span className="text-[10px] md:text-xs px-2 py-1 text-slate-500">+{formData.interests.length - 5} more</span>
-                                            )}
-                                        </div>
-
-                                        <div className="pt-6 border-t border-slate-800/50 flex justify-between items-end">
-                                            <div className="text-left">
-                                                <p className="text-[10px] text-slate-400 font-medium tracking-wider uppercase">Explorer at</p>
-                                                <p className="text-lg font-bold text-white tracking-tight">GeekyZindagi</p>
+                                        <div className="relative z-10 text-center space-y-8">
+                                            {/* Badge Section */}
+                                            <div className="flex justify-center mb-[-1rem]">
+                                                <motion.div
+                                                    initial={{ y: 20, opacity: 0 }}
+                                                    animate={{ y: 0, opacity: 1 }}
+                                                    transition={{ delay: 0.5 }}
+                                                    className="inline-flex items-center gap-1.5 px-3 py-1 bg-gray-950 text-white rounded-full text-[9px] font-black uppercase tracking-[0.2em] shadow-xl"
+                                                >
+                                                    <Sparkles size={10} className="text-yellow-400" />
+                                                    Identity Verified
+                                                </motion.div>
                                             </div>
-                                            <Laptop size={24} className="text-slate-600" />
+
+                                            <div className="space-y-2 pt-4">
+                                                <p className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">Validated Archetype</p>
+                                                <h2 className={cn("text-4xl md:text-5xl font-black uppercase italic tracking-tighter leading-none break-words", archetype.color)}>
+                                                    {archetype.title}
+                                                </h2>
+                                            </div>
+
+                                            <div className="flex flex-wrap justify-center gap-1.5">
+                                                {formData.interests.map(tag => (
+                                                    <span key={tag} className="text-[10px] font-bold px-2 py-1 rounded-lg bg-white/50 border border-white/40 text-gray-600 uppercase shadow-sm">
+                                                        {tag}
+                                                    </span>
+                                                ))}
+                                            </div>
+
+                                            <div className="pt-8 border-t border-gray-100/50 flex justify-between items-end">
+                                                <div className="text-left">
+                                                    <p className="text-[10px] text-gray-400 font-black tracking-widest uppercase">Verified by</p>
+                                                    <p className="text-xl font-black text-gray-900 tracking-tighter">geekyZindagi</p>
+                                                </div>
+                                                <div className={cn("p-2.5 rounded-2xl text-white shadow-lg", archetype.bg)}>
+                                                    <Rocket size={24} />
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div className="mt-8 flex gap-4">
-                                    <Button variant="outline" className="border-slate-700 hover:bg-slate-800 text-slate-300" onClick={() => window.print()}>
-                                        <Download size={16} className="mr-2" /> Save Image
-                                    </Button>
-                                    <Button className="bg-white text-slate-900 hover:bg-slate-200">
-                                        <Share2 size={16} className="mr-2" /> Share Profile
-                                    </Button>
-                                </div>
+                                    <div className="mt-12 flex flex-col md:flex-row gap-4 w-full max-w-sm">
+                                        <Button variant="outline" className="flex-1 rounded-2xl border-2 border-gray-900 text-gray-900 hover:bg-gray-50 h-14 font-black text-lg shadow-sm" onClick={() => window.print()}>
+                                            <Download size={20} className="mr-2" /> Export
+                                        </Button>
+                                        <Button className="flex-1 rounded-2xl bg-gray-900 text-white hover:bg-black shadow-2xl shadow-gray-900/40 h-14 font-black text-lg">
+                                            <Share2 size={20} className="mr-2" /> Share
+                                        </Button>
+                                    </div>
 
-                                <p className="mt-8 text-slate-500 text-sm">
-                                    Welcome to the community. <a href="/login" className="text-indigo-400 hover:underline">Sign in</a> to save your profile.
-                                </p>
+                                    <p className="mt-8 text-gray-500 font-medium text-center">
+                                        {isAuthenticated ? (
+                                            <>
+                                                Already signed in? <Link href="/dashboard" className="text-indigo-600 font-black hover:underline underline-offset-4">Go to Dashboard</Link>
+                                            </>
+                                        ) : (
+                                            <>
+                                                Already a member? <Link href="/login" className="text-indigo-600 font-black hover:underline underline-offset-4">Sign in here</Link>
+                                            </>
+                                        )}
+                                    </p>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                    </div>
 
-                            </motion.div>
-                        )}
-
-                    </AnimatePresence>
-                </div>
-
-                {/* Fixed Navigation Footer within the card */}
-                {currentStep < STEPS.length - 1 && (
-                    <div className="border-t border-slate-800 p-4 md:p-6 bg-slate-900/95 backdrop-blur z-10 flex justify-between items-center">
-                        <div className="w-4" />
-                        {
-                            currentStep > 0 && (
+                    {/* Navigation Footer */}
+                    {currentStep < STEPS.length - 1 && (
+                        <div className="border-t border-gray-100 p-6 md:p-8 bg-white/50 backdrop-blur flex justify-between items-center relative z-20">
+                            {currentStep > 0 ? (
                                 <button
                                     onClick={prevStep}
-                                    className="text-slate-500 hover:text-white transition-colors flex items-center gap-1 group text-sm"
+                                    className="text-gray-400 hover:text-gray-900 transition-colors flex items-center gap-2 font-bold uppercase tracking-widest text-xs"
                                 >
-                                    <ArrowRight className="rotate-180 w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+                                    <ArrowRight className="rotate-180 w-4 h-4" />
                                     Back
                                 </button>
-                            )
-                        }
+                            ) : <div />}
 
-                        <Button
-                            onClick={nextStep}
-                            className="bg-indigo-600 hover:bg-indigo-500 text-white rounded-full px-8 py-6 shadow-md shadow-indigo-500/20 transition-all hover:scale-105"
-                        >
-                            <span className="text-lg">Next Step</span>
-                            <ArrowRight className="ml-2 w-5 h-5" />
-                        </Button>
-                    </div>
-                )}
-
-            </div>
+                            <Button
+                                onClick={nextStep}
+                                disabled={currentStep === 0 && formData.interests.length === 0}
+                                className="bg-indigo-600 hover:bg-indigo-500 text-white rounded-2xl px-10 py-7 shadow-xl shadow-indigo-600/20 transition-all hover:scale-105 group disabled:opacity-50 disabled:hover:scale-100"
+                            >
+                                <span className="text-xl font-black tracking-tight italic">
+                                    {currentStep === 1 ? "Forge Profile" : "Continue"}
+                                </span>
+                                <ArrowRight className="ml-2 w-6 h-6 group-hover:translate-x-1 transition-transform" />
+                            </Button>
+                        </div>
+                    )}
+                </div>
+            </motion.div>
         </div>
     );
 }

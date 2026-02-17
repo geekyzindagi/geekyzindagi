@@ -21,8 +21,42 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "GeekyZindagi",
-  description: "Your platform for technology and lifestyle",
+  metadataBase: new URL("https://www.geekyzindagi.com"),
+  title: {
+    default: "geekyZindagi | Technology meets Lifestyle",
+    template: "%s | geekyZindagi",
+  },
+  description: "curated platform for tech implementation, creative building, and purposeful living. Join the geekyZindagi community to Build, Learn, and Grow.",
+  keywords: ["technology", "lifestyle", "coding", "productivity", "wellness", "geekyZindagi"],
+  authors: [{ name: "geekyZindagi Tribe" }],
+  creator: "geekyZindagi",
+  publisher: "geekyZindagi",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  openGraph: {
+    title: "geekyZindagi | Technology meets Lifestyle",
+    description: "curated platform for tech implementation, creative building, and purposeful living.",
+    url: "https://www.geekyzindagi.com",
+    siteName: "geekyZindagi",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "geekyZindagi | Technology meets Lifestyle",
+    description: "curated platform for tech implementation, creative building, and purposeful living.",
+    creator: "@geekyzindagi",
+  },
+  alternates: {
+    canonical: "/",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({

@@ -20,6 +20,9 @@ const links = {
     { name: "Events", href: "/events" },
     { name: "Mentorship", href: "/mentorship" },
   ],
+  forms: [
+    { name: "Geek Explorer", href: "/geek-explorer" },
+  ],
 };
 
 const socials = [
@@ -35,7 +38,7 @@ export function FooterNotion() {
     <footer className="bg-[#FAFAFA] border-t border-gray-200">
       <div className="container mx-auto px-6 py-12">
         <div className="max-w-4xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-12">
             {/* Brand */}
             <div className="col-span-2 md:col-span-1">
               <Logo className="mb-3" />

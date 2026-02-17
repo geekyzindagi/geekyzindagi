@@ -87,12 +87,20 @@ export function Navbar({ user }: NavbarProps) {
                   </Button>
                 </>
               ) : (
-                <Button
-                  asChild
-                  className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white rounded-full px-6"
-                >
-                  <Link href="/ideas">Get Started</Link>
-                </Button>
+                <>
+                  <Link
+                    href="/login"
+                    className="text-sm text-muted-foreground hover:text-white transition-colors"
+                  >
+                    Sign in
+                  </Link>
+                  <Button
+                    asChild
+                    className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white rounded-full px-6"
+                  >
+                    <Link href="/ideas">Get Started</Link>
+                  </Button>
+                </>
               )}
             </div>
 

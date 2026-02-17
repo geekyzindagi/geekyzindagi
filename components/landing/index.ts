@@ -45,6 +45,7 @@ export { NavbarNotion } from "./NavbarNotion";
 // Public idea submission components
 export { CommunityStats } from "./CommunityStats";
 export { IdeaForm } from "./IdeaForm";
+export { ProgressTimeline } from "./ProgressTimeline";
 
 // Effects
 export * from "./effects";
