@@ -11,6 +11,7 @@ import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
 import apiClient from '@/lib/api-client';
 import { Card, CardContent } from '@/components/ui/card';
+import { useAuth } from '@/context/AuthContext';
 
 // 1. Data Structure
 const STEPS = [
@@ -70,6 +71,7 @@ const INTERESTS_BY_REALM: Record<string, string[]> = {
 import { NeuralDomainBackground } from '@/components/landing/NeuralDomainBackground';
 
 export default function WizardForm() {
+    const { isAuthenticated } = useAuth();
     const [currentStep, setCurrentStep] = useState(0);
     const [submissionId, setSubmissionId] = useState<string | null>(null);
     const [formData, setFormData] = useState<{ realms: string[], interests: string[], email: string }>({
@@ -456,7 +458,15 @@ export default function WizardForm() {
                                     </div>
 
                                     <p className="mt-8 text-gray-500 font-medium text-center">
-                                        Already a member? <Link href="/login" className="text-indigo-600 font-black hover:underline underline-offset-4">Sign in here</Link>
+                                        {isAuthenticated ? (
+                                            <>
+                                                Already signed in? <Link href="/dashboard" className="text-indigo-600 font-black hover:underline underline-offset-4">Go to Dashboard</Link>
+                                            </>
+                                        ) : (
+                                            <>
+                                                Already a member? <Link href="/login" className="text-indigo-600 font-black hover:underline underline-offset-4">Sign in here</Link>
+                                            </>
+                                        )}
                                     </p>
                                 </motion.div>
                             )}
