@@ -74,24 +74,30 @@ const stages = [
 
 export function ProgressTimeline() {
     return (
-        <div className="relative border-l-2 border-gray-200 ml-4 md:ml-6 space-y-12 max-w-3xl mx-auto">
+        <div className="relative space-y-12 max-w-4xl mx-auto px-6">
+            <div className="absolute left-[26px] md:left-1/2 md:-translate-x-1/2 top-0 bottom-0 w-[2px] bg-gray-100 hidden md:block" />
             {stages.map((stage, index) => (
                 <motion.div
                     key={stage.id}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
                     transition={{ delay: index * 0.1, duration: 0.5 }}
-                    className="relative pl-8 md:pl-12"
+                    className={cn(
+                        "relative flex w-full",
+                        index % 2 === 0 ? "md:justify-end md:pr-[50%]" : "md:pl-[50%]"
+                    )}
                 >
                     {/* Timeline Dot */}
                     <div className={cn(
-                        "absolute -left-[9px] top-6 h-4 w-4 rounded-full border-2 border-[#FFFCF8]",
-                        stage.status === "active" ? "bg-indigo-600 animate-pulse" : "bg-gray-400"
+                        "absolute left-[18px] md:left-1/2 md:-translate-x-1/2 top-10 h-4 w-4 rounded-full border-4 border-[#FFFCF8] z-20",
+                        stage.status === "active" ? "bg-indigo-600 shadow-[0_0_15px_rgba(79,70,229,0.5)]" : "bg-gray-300"
                     )} />
 
                     <Card className={cn(
-                        "overflow-hidden transition-all duration-300 hover:shadow-xl hover:border-indigo-200 bg-white/50 backdrop-blur-sm",
-                        stage.status === "active" && "border-indigo-500/50 shadow-lg shadow-indigo-500/5"
+                        "w-full md:max-w-md transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 bg-white/80 backdrop-blur-md border-gray-100",
+                        index % 2 === 0 ? "md:mr-10" : "md:ml-10",
+                        stage.status === "active" && "border-indigo-500/30 shadow-xl shadow-indigo-500/5 ring-1 ring-indigo-500/10"
                     )}>
                         <CardHeader className="pb-3">
                             <div className="flex items-start justify-between flex-wrap gap-4">
@@ -133,11 +139,10 @@ export function ProgressTimeline() {
                 </motion.div>
             ))}
 
-            <div className="relative pl-8 md:pl-12 pt-4">
-                <div className="absolute -left-[5px] top-5 h-2.5 w-2.5 rounded-full bg-gray-300" />
-                <div className="flex items-center gap-2 text-gray-400">
-                    <ArrowUpCircle className="h-5 w-5" />
-                    <span className="text-sm font-bold uppercase tracking-widest">Inception</span>
+            <div className="relative pl-8 md:pl-0 flex justify-center pt-8">
+                <div className="flex items-center gap-2 text-gray-300 bg-white px-4 py-1 rounded-full border border-gray-100 shadow-sm">
+                    <ArrowUpCircle className="h-4 w-4" />
+                    <span className="text-[10px] font-black uppercase tracking-[0.2em]">Inception</span>
                 </div>
             </div>
         </div>

@@ -2,6 +2,7 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
+import { BloomIllustration } from "./garden-illustrations";
 
 const categories = [
   { id: "all", label: "All" },
@@ -74,7 +75,7 @@ export function DomainsNotion() {
       : domains.filter((d) => d.category === activeCategory);
 
   return (
-    <section id="domains" className="py-24 bg-[#FFFCF8]">
+    <div id="domains">
       <div className="container mx-auto px-6">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
@@ -84,7 +85,9 @@ export function DomainsNotion() {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <span className="text-3xl mb-4 block">🌈</span>
+            <div className="h-32 mb-4 flex justify-center">
+              <BloomIllustration />
+            </div>
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               Explore every domain
             </h2>
@@ -105,11 +108,10 @@ export function DomainsNotion() {
               <button
                 key={cat.id}
                 onClick={() => setActiveCategory(cat.id)}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                  activeCategory === cat.id
-                    ? "bg-gray-900 text-white"
-                    : "bg-white text-gray-600 hover:bg-gray-100"
-                }`}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeCategory === cat.id
+                  ? "bg-gray-900 text-white"
+                  : "bg-white text-gray-600 hover:bg-gray-100"
+                  }`}
               >
                 {cat.label}
               </button>
@@ -128,6 +130,6 @@ export function DomainsNotion() {
           </motion.div>
         </div>
       </div>
-    </section>
+    </div>
   );
 }

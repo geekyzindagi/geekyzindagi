@@ -1,7 +1,16 @@
+import { Metadata } from "next";
 import Link from "next/link";
 import { NavbarNotion, FooterNotion } from "@/components/landing";
 
 import { Calendar, Clock, ArrowRight } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "The Library | Insights & Strategies",
+  description: "Deep dives into AI memory, agentic frameworks, and the psychology of building. curated insights for the modern geek.",
+  alternates: {
+    canonical: "/blog",
+  },
+};
 
 const blogPosts = [
   {

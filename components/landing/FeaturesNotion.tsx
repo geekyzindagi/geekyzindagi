@@ -75,7 +75,7 @@ function FeatureCard({
 
 export function FeaturesNotion() {
   return (
-    <section id="features" className="py-24 bg-[#FAFAFA]">
+    <div id="features">
       <div className="container mx-auto px-6">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
@@ -102,6 +102,6 @@ export function FeaturesNotion() {
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 }

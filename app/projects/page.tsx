@@ -1,8 +1,17 @@
+import { Metadata } from "next";
 import Link from "next/link";
 import { NavbarNotion, FooterNotion } from "@/components/landing";
 
 import { Github, ExternalLink, Star, GitFork, Code2 } from "lucide-react";
 import { getGitHubStats } from "@/lib/github";
+
+export const metadata: Metadata = {
+  title: "Open Source Projects | geekyZindagi",
+  description: "Explore our foundation and open-source tools for the modern AI builder. From our main app to specialized libraries.",
+  alternates: {
+    canonical: "/projects",
+  },
+};
 
 const projects = [
   {
@@ -58,8 +67,8 @@ export default async function ProjectsPage() {
               <div>
                 <div className="flex justify-between items-start mb-4">
                   <span className={`px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded border ${project.status === 'Active' ? 'bg-green-50 text-green-700 border-green-200' :
-                      project.status === 'Beta' ? 'bg-amber-50 text-amber-700 border-amber-200' :
-                        'bg-blue-50 text-blue-700 border-blue-200'
+                    project.status === 'Beta' ? 'bg-amber-50 text-amber-700 border-amber-200' :
+                      'bg-blue-50 text-blue-700 border-blue-200'
                     }`}>
                     {project.status}
                   </span>

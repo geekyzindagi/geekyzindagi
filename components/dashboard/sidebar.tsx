@@ -14,6 +14,10 @@ import {
   BarChart3,
   Compass,
   Milestone,
+  Briefcase,
+  StickyNote,
+  KanbanSquare,
+  CalendarDays,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
@@ -37,6 +41,29 @@ export function Sidebar({ isAdmin }: SidebarProps) {
       href: "/progress",
       label: "Progress",
       icon: Milestone,
+    },
+  ];
+
+  const workspaceItems = [
+    {
+      href: "/workspace",
+      label: "Workspace",
+      icon: Briefcase,
+    },
+    {
+      href: "/workspace/notes",
+      label: "Notes",
+      icon: StickyNote,
+    },
+    {
+      href: "/workspace/tasks",
+      label: "Tasks",
+      icon: KanbanSquare,
+    },
+    {
+      href: "/workspace/calendar",
+      label: "Calendar",
+      icon: CalendarDays,
     },
   ];
 
@@ -132,9 +159,35 @@ export function Sidebar({ isAdmin }: SidebarProps) {
           {navItems.map((item) => (
             <NavItem key={item.href} {...item} />
           ))}
-          {isAdmin && adminNavItems.map((item) => (
+
+          {/* Workspace Section */}
+          {!collapsed && (
+            <div className="pt-4 pb-1">
+              <span className="px-3 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/50">
+                Workspace
+              </span>
+            </div>
+          )}
+          {collapsed && <div className="my-2 border-t" />}
+          {workspaceItems.map((item) => (
             <NavItem key={item.href} {...item} />
           ))}
+
+          {isAdmin && (
+            <>
+              {!collapsed && (
+                <div className="pt-4 pb-1">
+                  <span className="px-3 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/50">
+                    Admin
+                  </span>
+                </div>
+              )}
+              {collapsed && <div className="my-2 border-t" />}
+              {adminNavItems.map((item) => (
+                <NavItem key={item.href} {...item} />
+              ))}
+            </>
+          )}
         </nav>
 
         {/* Bottom Navigation */}

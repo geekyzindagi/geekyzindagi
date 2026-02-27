@@ -41,6 +41,18 @@ export { FeaturesNotion } from "./FeaturesNotion";
 export { CTANotion } from "./CTANotion";
 export { FooterNotion } from "./FooterNotion";
 export { NavbarNotion } from "./NavbarNotion";
+export { TreeWrapper } from "./TreeWrapper";
+export { Branch } from "./Branch";
+export { RootsFooter } from "./RootsFooter";
+export { TreeDecoration } from "./TreeDecoration";
+export {
+    CanopyIllustration,
+    SeedIllustration,
+    BloomIllustration,
+    FruitIllustration,
+    ExplorerIllustration,
+    GardenIllustration
+} from "./garden-illustrations";
 
 // Public idea submission components
 export { CommunityStats } from "./CommunityStats";

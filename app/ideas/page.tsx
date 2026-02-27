@@ -10,6 +10,9 @@ export const metadata: Metadata = {
   title: "Share Your Idea | geekyZindagi",
   description:
     "Share your project idea with the geekyZindagi community. Become an Explorer and connect with Builders and Elders who can help bring your vision to life.",
+  alternates: {
+    canonical: "/ideas",
+  },
 };
 
 const progressionSteps = [

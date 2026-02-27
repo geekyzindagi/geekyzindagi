@@ -3,14 +3,16 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { Logo } from "@/components/ui/logo";
+import { cn } from "@/lib/utils";
 
 import { useAuth } from "@/context/AuthContext";
 
 const navLinks = [
-  { name: "Journey", href: "/#story" },
-  { name: "Explore", href: "/#domains" },
+  { name: "Journey", href: "/journey" },
+  { name: "Explore", href: "/explore" },
   { name: "Events", href: "/events" },
   { name: "Mentorship", href: "/mentorship" },
   { name: "Projects", href: "/projects" },
@@ -21,6 +23,7 @@ const navLinks = [
 export function NavbarNotion() {
   const { user } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
 
   return (
     <>
@@ -32,15 +35,30 @@ export function NavbarNotion() {
 
             {/* Desktop nav */}
             <div className="hidden md:flex items-center gap-1">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.name}
-                  href={link.href}
-                  className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
-                >
-                  {link.name}
-                </Link>
-              ))}
+              {navLinks.map((link) => {
+                const isActive = pathname === link.href;
+                return (
+                  <Link
+                    key={link.name}
+                    href={link.href}
+                    className={cn(
+                      "px-4 py-2 text-sm transition-all duration-200 rounded-lg relative",
+                      isActive
+                        ? "text-gray-900 font-bold bg-gray-100"
+                        : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                    )}
+                  >
+                    {link.name}
+                    {isActive && (
+                      <motion.div
+                        layoutId="nav-active"
+                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-gray-900 mx-4"
+                        transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                      />
+                    )}
+                  </Link>
+                );
+              })}
             </div>
 
             {/* Auth */}
@@ -94,16 +112,24 @@ export function NavbarNotion() {
         >
           <div className="container mx-auto px-6 py-8">
             <div className="flex flex-col gap-2">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.name}
-                  href={link.href}
-                  onClick={() => setIsOpen(false)}
-                  className="px-4 py-3 text-lg text-gray-900 hover:bg-gray-100 rounded-xl transition-colors"
-                >
-                  {link.name}
-                </Link>
-              ))}
+              {navLinks.map((link) => {
+                const isActive = pathname === link.href;
+                return (
+                  <Link
+                    key={link.name}
+                    href={link.href}
+                    onClick={() => setIsOpen(false)}
+                    className={cn(
+                      "px-4 py-3 text-lg rounded-xl transition-colors",
+                      isActive
+                        ? "text-gray-900 font-bold bg-gray-100"
+                        : "text-gray-900 hover:bg-gray-100"
+                    )}
+                  >
+                    {link.name}
+                  </Link>
+                );
+              })}
               <hr className="my-4 border-gray-200" />
               <Link
                 href="/ideas"

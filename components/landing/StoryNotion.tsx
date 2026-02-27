@@ -2,6 +2,7 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
+import { SeedIllustration } from "./garden-illustrations";
 
 const steps = [
   {
@@ -67,7 +68,7 @@ function StepCard({ step, index }: { step: (typeof steps)[0]; index: number }) {
 
 export function StoryNotion() {
   return (
-    <section id="story" className="py-24 bg-[#FAFAFA]">
+    <div id="story">
       <div className="container mx-auto px-6">
         <div className="max-w-3xl mx-auto">
           {/* Header */}
@@ -77,7 +78,9 @@ export function StoryNotion() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <span className="text-3xl mb-4 block">🚀</span>
+            <div className="h-24 mb-4 flex justify-center">
+              <SeedIllustration />
+            </div>
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               The Journey
             </h2>
@@ -94,6 +97,6 @@ export function StoryNotion() {
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 }

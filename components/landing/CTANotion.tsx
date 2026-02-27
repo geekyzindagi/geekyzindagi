@@ -3,10 +3,11 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { FruitIllustration } from "./garden-illustrations";
 
 export function CTANotion() {
   return (
-    <section className="py-24 bg-[#FFFCF8]">
+    <div className="py-12">
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -14,7 +15,9 @@ export function CTANotion() {
           viewport={{ once: true }}
           className="max-w-2xl mx-auto text-center"
         >
-          <span className="text-5xl mb-6 block">🚀</span>
+          <div className="h-32 mb-6 flex justify-center">
+            <FruitIllustration />
+          </div>
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
             Ready to start your journey?
           </h2>
@@ -39,6 +42,6 @@ export function CTANotion() {
           </div>
         </motion.div>
       </div>
-    </section>
+    </div>
   );
 }
