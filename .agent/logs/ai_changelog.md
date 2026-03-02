@@ -27,3 +27,8 @@ All significant AI-driven changes and architectural decisions are logged here.
     - Implemented a `useMounted` custom hook to detect the client-side mount state.
     - Wrapped `Math.random()` calls (used for decorative elements like leaves and sparks) in a conditional render so they only execute after hydration.
     - This prevents attributes from differing between the server-rendered HTML and client-side mount.
+
+## [2026-02-27] - Repository Sync
+- **Author**: Antigravity
+- **Action**: Staged, committed, and pushed all session changes to the remote repository.
+- **Details**: Synced the new `.agent` structure, explorer questions, and hydration fix to the `main` branch.
