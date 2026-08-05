@@ -1,7 +1,19 @@
+import { Metadata } from "next";
 import { NavbarNotion, FooterNotion } from "@/components/landing";
 
 import Link from "next/link";
 import { ArrowLeft, Share2, Bookmark } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "Modern Frameworks & Strategies for Building AI Applications",
+  description: "A comprehensive guide to the best frameworks and architectural strategies for building agentic AI systems today.",
+  openGraph: {
+    title: "Modern Frameworks & Strategies for Building AI Applications",
+    description: "A comprehensive guide to the best frameworks and architectural strategies for building agentic AI systems today.",
+    type: "article",
+    publishedTime: "2026-02-07T00:00:00.000Z",
+  }
+};
 
 export default async function BlogPost2() {
 

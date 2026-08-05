@@ -1,7 +1,19 @@
+import { Metadata } from "next";
 import { NavbarNotion, FooterNotion } from "@/components/landing";
 
 import Link from "next/link";
 import { ArrowLeft, Share2, Bookmark } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "Navigating AI Memory & Context Window Issues in Production",
+  description: "Deep dive into the challenges of managing context windows in production AI applications and how to overcome them.",
+  openGraph: {
+    title: "Navigating AI Memory & Context Window Issues in Production",
+    description: "Deep dive into the challenges of managing context windows in production AI applications and how to overcome them.",
+    type: "article",
+    publishedTime: "2026-02-08T00:00:00.000Z",
+  }
+};
 
 export default async function BlogPost1() {
 
