@@ -12,6 +12,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
         "/mentorship",
         "/projects",
         "/blog",
+        "/blog/ai-memory-context-issues",
+        "/blog/frameworks-strategies-to-build",
+        "/blog/eval-validity-checks",
     ];
 
     return routes.map((route) => ({
