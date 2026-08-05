@@ -6,11 +6,15 @@ import { ArrowLeft, Share2, Bookmark } from "lucide-react";
 export const metadata: Metadata = {
   title: "My retrieval benchmark passed the noise test. So did one I broke on purpose.",
   description: "A deep dive into retrieval evals, noise floors, and why one check is never enough. Learn how to validate your benchmarks properly.",
+  authors: [{ name: "Guruprasad Kudte" }],
   openGraph: {
     title: "My retrieval benchmark passed the noise test.",
     description: "A deep dive into retrieval evals, noise floors, and why one check is never enough.",
     type: "article",
     publishedTime: "2026-08-05T00:00:00.000Z",
+  },
+  twitter: {
+    title: "My retrieval benchmark passed the noise test. So did one I broke on purpose.",
   }
 };
 
@@ -43,7 +47,7 @@ export default async function EvalValidityChecks() {
                   GZ
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-gray-900">Ramesh Kudte</p>
+                  <p className="text-sm font-semibold text-gray-900">Guruprasad Kudte</p>
                   <p className="text-xs text-gray-500">August 5, 2026 • 6 min read</p>
                 </div>
               </div>
