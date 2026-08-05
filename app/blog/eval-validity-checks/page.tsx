@@ -43,7 +43,7 @@ export default async function EvalValidityChecks() {
                   GZ
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-gray-900">GeekyZindagi Team</p>
+                  <p className="text-sm font-semibold text-gray-900">Ramesh Kudte</p>
                   <p className="text-xs text-gray-500">August 5, 2026 • 6 min read</p>
                 </div>
               </div>
@@ -149,7 +149,15 @@ export default async function EvalValidityChecks() {
 
             <h2 className="text-2xl font-bold mt-12 mb-4 text-gray-900">One trap if your pipeline is hybrid</h2>
             <p className="mb-8 text-gray-700 leading-relaxed">
-              If you run this with BM25 and any reranker disabled, those components don't consume vectors. Leave them on, they'll carry the score, and you'll certify a benchmark you never tested.
+              <strong>Run this with BM25 and any reranker disabled.</strong> Those components don't consume vectors. Leave them on and they'll carry the score, and you'll certify a benchmark you never tested.
+            </p>
+
+            <h2 className="text-2xl font-bold mt-12 mb-4 text-gray-900">What this establishes, and what it doesn't</h2>
+            <p className="mb-6 text-gray-700 leading-relaxed">
+              Check 2 (23.5×) is a live measurement — real ONNX embeddings, real index, real queries. Check 1 (0.82×) is a simulation of the scoring harness: it assigns random scores to document IDs and confirms the scorer's arithmetic matches probability theory. It rules out counting bugs, dedup errors, and corrupted gold sets — it caught exactly such a bug on its first run. It does not push random vectors through the live index.
+            </p>
+            <p className="mb-8 text-gray-700 leading-relaxed">
+              Two further limits: with 28 queries this detects gross benchmark failure, not mild leakage. And seven of those queries have more than one gold file, which raises their individual floors while carrying equal weight in a flat mean.
             </p>
 
             <h2 className="text-2xl font-bold mt-12 mb-4 text-gray-900">The Code</h2>
