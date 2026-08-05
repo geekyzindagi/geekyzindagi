@@ -1,6 +1,18 @@
+import { Metadata } from "next";
 import { NavbarNotion, FooterNotion } from "@/components/landing";
 import Link from "next/link";
 import { ArrowLeft, Share2, Bookmark } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "My retrieval benchmark passed the noise test. So did one I broke on purpose.",
+  description: "A deep dive into retrieval evals, noise floors, and why one check is never enough. Learn how to validate your benchmarks properly.",
+  openGraph: {
+    title: "My retrieval benchmark passed the noise test.",
+    description: "A deep dive into retrieval evals, noise floors, and why one check is never enough.",
+    type: "article",
+    publishedTime: "2026-08-05T00:00:00.000Z",
+  }
+};
 
 export default async function EvalValidityChecks() {
   return (

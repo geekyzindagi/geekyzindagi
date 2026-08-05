@@ -5,6 +5,14 @@ import { Calendar, Clock, ArrowRight } from "lucide-react";
 
 const blogPosts = [
   {
+    title: "My retrieval benchmark passed the replace-all-vectors-with-noise test.",
+    description: "How to avoid certifying a benchmark you never tested. A deep dive into retrieval evals, noise floors, and why one check is never enough.",
+    slug: "eval-validity-checks",
+    date: "Aug 5, 2026",
+    readTime: "6 min read",
+    tags: ["Evaluation", "Search", "AI"],
+  },
+  {
     title: "Navigating AI Memory & Context Window Issues",
     description: "Deep dive into the challenges of managing context windows in production AI applications and how to overcome them.",
     slug: "ai-memory-context-issues",
