@@ -1,7 +1,13 @@
+import { Metadata } from "next";
 import Link from "next/link";
 import { NavbarNotion, FooterNotion } from "@/components/landing";
 
 import { Calendar, Clock, ArrowRight } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "The Library | geekyZindagi Blog",
+  description: "Insights, strategies, and deep dives into the world of AI building and geeky living.",
+};
 
 const blogPosts = [
   {

@@ -1,8 +1,14 @@
 import Link from "next/link";
+import { Metadata } from "next";
 import { NavbarNotion, FooterNotion } from "@/components/landing";
 
 import { Github, ExternalLink, Star, GitFork, Code2 } from "lucide-react";
 import { getGitHubStats } from "@/lib/github";
+
+export const metadata: Metadata = {
+  title: "Open Source Projects | geekyZindagi",
+  description: "Explore the open-source tools, AI applications, and community projects built by the geekyZindagi team.",
+};
 
 const projects = [
   {
