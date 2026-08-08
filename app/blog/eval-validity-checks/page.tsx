@@ -68,7 +68,7 @@ export default async function EvalValidityChecks() {
             </p>
 
             <p className="mb-6 text-gray-700 leading-relaxed">
-              Good test. I ran it on my own production eval (1052 chunks, 218 files, 28 queries, baseline MRR@10 0.358). It passed.
+              Good test. I ran it on my own production eval (1052 chunks, 218 files, 28 queries, baseline MRR@10 0.349). It passed.
             </p>
             <p className="mb-6 text-gray-700 leading-relaxed">
               Then I built a benchmark that is obviously broken — one where a random ranker scores 80% of what a perfect model scores — and ran the same test on that.
@@ -142,7 +142,10 @@ export default async function EvalValidityChecks() {
               I found it by inverting the approximation. <code className="bg-gray-100 px-1 py-0.5 rounded text-sm text-pink-600">E ≈ G·H₁₀/N</code>, so <code className="bg-gray-100 px-1 py-0.5 rounded text-sm text-pink-600">N ≈ 1.39 × 2.929 / 0.02246 ≈ 181</code>. Nowhere near 1052, close to 218.
             </p>
             <p className="mb-6 text-gray-700 leading-relaxed">
-              Corrected: 0.82x on Check 1, 23.5x on Check 2, both pass.
+              Corrected: 0.82x on Check 1, 22.9x on Check 2, both pass.
+            </p>
+            <p className="mb-6 text-gray-700 leading-relaxed font-semibold italic">
+              Correction: an earlier version cited a baseline of 0.358 from an unlogged run. The traceable figure from the logged phase-6 baseline is 0.349 (n=27), giving 22.9×.
             </p>
 
             <div className="bg-gray-100 p-8 rounded-2xl border-l-4 border-gray-900 my-10">
@@ -158,7 +161,7 @@ export default async function EvalValidityChecks() {
 
             <h2 className="text-2xl font-bold mt-12 mb-4 text-gray-900">What this establishes, and what it doesn't</h2>
             <p className="mb-6 text-gray-700 leading-relaxed">
-              Check 2 (23.5×) is a live measurement — real ONNX embeddings, real index, real queries. Check 1 (0.82×) is a simulation of the scoring harness: it assigns random scores to document IDs and confirms the scorer's arithmetic matches probability theory. It rules out counting bugs, dedup errors, and corrupted gold sets — it caught exactly such a bug on its first run. It does not push random vectors through the live index.
+              Check 2 (22.9×) is a live measurement — real ONNX embeddings, real index, real queries. Check 1 (0.82×) is a simulation of the scoring harness: it assigns random scores to document IDs and confirms the scorer's arithmetic matches probability theory. It rules out counting bugs, dedup errors, and corrupted gold sets — it caught exactly such a bug on its first run. It does not push random vectors through the live index.
             </p>
             <p className="mb-8 text-gray-700 leading-relaxed">
               Two further limits: with 28 queries this detects gross benchmark failure, not mild leakage. And seven of those queries have more than one gold file, which raises their individual floors while carrying equal weight in a flat mean.
