@@ -164,7 +164,7 @@ export default async function EvalValidityChecks() {
               Check 2 (22.9×) is a live measurement — real ONNX embeddings, real index, real queries. Check 1 (0.82×) is a simulation of the scoring harness: it assigns random scores to document IDs and confirms the scorer's arithmetic matches probability theory. It rules out counting bugs, dedup errors, and corrupted gold sets — it caught exactly such a bug on its first run. It does not push random vectors through the live index.
             </p>
             <p className="mb-8 text-gray-700 leading-relaxed">
-              Two further limits: with 28 queries this detects gross benchmark failure, not mild leakage. And seven of those queries have more than one gold file, which raises their individual floors while carrying equal weight in a flat mean.
+              Two further limits: with 27 queries this detects gross benchmark failure, not mild leakage. And seven of those queries have more than one gold file, which raises their individual floors while carrying equal weight in a flat mean.
             </p>
 
             <h2 className="text-2xl font-bold mt-12 mb-4 text-gray-900">The Code</h2>
