@@ -11,6 +11,14 @@ export const metadata: Metadata = {
 
 const blogPosts = [
   {
+    title: "A Benchmark Can Pass Every Validity Check and Still Fail You",
+    description: "Why a benchmark can pass every validity check you throw at it, and still be statistically meaningless in practice.",
+    slug: "eval-regression-gates",
+    date: "Aug 8, 2026",
+    readTime: "8 min read",
+    tags: ["Evaluation", "Search", "AI"],
+  },
+  {
     title: "My retrieval benchmark passed the replace-all-vectors-with-noise test.",
     description: "How to avoid certifying a benchmark you never tested. A deep dive into retrieval evals, noise floors, and why one check is never enough.",
     slug: "eval-validity-checks",
