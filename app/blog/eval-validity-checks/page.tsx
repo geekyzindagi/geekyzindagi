@@ -68,7 +68,7 @@ export default async function EvalValidityChecks() {
             </p>
 
             <p className="mb-6 text-gray-700 leading-relaxed">
-              Good test. I ran it on my own production eval (1052 chunks, 218 files, 28 queries, baseline MRR@10 0.349). It passed.
+              Good test. I ran it on my own production eval (1052 chunks, 218 files, 27 queries, baseline MRR@10 0.349). It passed.
             </p>
             <p className="mb-6 text-gray-700 leading-relaxed">
               Then I built a benchmark that is obviously broken — one where a random ranker scores 80% of what a perfect model scores — and ran the same test on that.
